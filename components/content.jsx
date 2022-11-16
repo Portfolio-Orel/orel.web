@@ -1,7 +1,16 @@
 import React from 'react';
 import DetailsCard from './details-card/details-card';
-import fullStackLottie from '../public/lottie_full_stack.json';
+import fullStackLottie from '../public/web-dev.json';
+import mobileLottie from '../public/lottie_mobile_development.json';
 
+const mobileLottieConfig = {
+  loop: true,
+  autoplay: true,
+  animationData: mobileLottie,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice',
+  },
+};
 const fullStackLottieConfig = {
   loop: true,
   autoplay: true,
@@ -23,7 +32,7 @@ export default function Content() {
         title="Mobile"
         experience="4"
         disclaimers={['4 Freelance', '1 Professional']}
-        lottieConfig={fullStackLottieConfig}
+        lottieConfig={mobileLottieConfig}
       />
     </div>
   );

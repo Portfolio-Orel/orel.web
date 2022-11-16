@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import fullStackLottie from '../public/lottie_full_stack.json';
 
 export default function MobileHeader() {
   return (
