@@ -14,6 +14,7 @@ export default function DetailsCard({ title, disclaimers, experience, lottieConf
     setLottieConfigCopy(newLottieConfig);
   };
 
+  
   const expand = (shouldExpand = true) => {
     setIsExpand(shouldExpand);
   };
