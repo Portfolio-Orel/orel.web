@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     colors: {
       text: '#f2f2f2',
-      'text-scondary': '#a6a6a6',
+      'text-secondary': '#a6a6a6',
       primary: '#9333ea',
       secondary: '#D926A9',
       accent: '#1FB2A6',
@@ -29,7 +29,7 @@ module.exports = {
           },
           '50%': {
             'box-shadow': '0 25px 15px 0px shadow',
-            transform: 'translatey(-20px)',
+            transform: 'translatey(-10px)',
           },
           '100%': {
             'box-shadow': '0 5px 15px 0px shadow',
