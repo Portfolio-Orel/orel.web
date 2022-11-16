@@ -2,6 +2,7 @@ import Head from 'next/head';
 import TopBar from '../components/top-bar';
 import Content from '../components/content';
 import Header from '../components/header';
+import Footer from '../components/footer';
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <TopBar />
       <Header />
       <Content />
+      <Footer />
     </div>
   );
 }

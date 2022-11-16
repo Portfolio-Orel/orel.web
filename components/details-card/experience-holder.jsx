@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function ExperienceHolder({ experience, isDisclaimer, className }) {
   return (
@@ -13,3 +14,9 @@ export default function ExperienceHolder({ experience, isDisclaimer, className }
     </div>
   );
 }
+
+ExperienceHolder.propTypes = {
+  experience: PropTypes.string.isRequired,
+  isDisclaimer: PropTypes.bool,
+  className: PropTypes.string,
+};

@@ -3,6 +3,10 @@ module.exports = {
   darkMode: 'class',
   content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    fontFamily: {
+      Roboto: ['Roboto', 'sans-serif']
+
+    },
     colors: {
       text: '#f2f2f2',
       'text-secondary': '#a6a6a6',
@@ -18,10 +22,25 @@ module.exports = {
       shadow: 'rgba(255, 255, 255, 0.2)',
     },
     extend: {
+      height: {
+        88: '22rem'
+      },
       animation: {
+        appear: 'appear 0.3s ease-in-out',
         floating: 'floating 3.3s ease-in-out infinite'
       },
       keyframes: {
+        appear: {
+          '0%': {
+            opacity: 0
+          },
+          '50%': {
+            opacity: 0.5
+          },
+          '100%': {
+            opacity: 1
+          },
+        },
         floating: {
           '0%': {
             'box-shadow': '0 5px 15px 0px shadow',
