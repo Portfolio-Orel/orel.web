@@ -67,7 +67,7 @@ export default function DetailsCard({ title, disclaimers, experience, lottieConf
 
 DetailsCard.propTypes = {
   title: PropTypes.string.isRequired,
-  experience: PropTypes.number.isRequired,
+  experience: PropTypes.string.isRequired,
   disclaimers: PropTypes.arrayOf(PropTypes.string),
   lottieConfig: PropTypes.any,
 };
