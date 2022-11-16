@@ -1,9 +1,9 @@
 import Head from 'next/head';
-import TopBar from '../components/top-bar';
 import Content from '../components/content';
-import Header from '../components/header';
+import MobileHeader from '../components/header';
+import TopBar from '../components/top-bar';
 
-export default function Home() {
+export default function Mobile() {
   return (
     <div className="h-screen w-screen bg-background flex flex-col align-top justify-start">
       <Head>
@@ -11,7 +11,7 @@ export default function Home() {
         <link rel="icon" href="/resume.ico" />
       </Head>
       <TopBar />
-      <Header />
+      <MobileHeader />
       <Content />
     </div>
   );
