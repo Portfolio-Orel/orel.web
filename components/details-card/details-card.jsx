@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Lottie from 'react-lottie';
 import ExperienceHolder from './experience-holder';
 import PropTypes from 'prop-types';
-import Button from '../button';
+import Button from '../Button';
 
 export default function DetailsCard({ title, disclaimers, experience, lottieConfig }) {
   const [lottieConfigCopy, setLottieConfigCopy] = useState(lottieConfig);
@@ -13,7 +13,6 @@ export default function DetailsCard({ title, disclaimers, experience, lottieConf
     newLottieConfig.autoPlay = shouldStop;
     setLottieConfigCopy(newLottieConfig);
   };
-
 
   const expand = (shouldExpand = true) => {
     setIsExpand(shouldExpand);

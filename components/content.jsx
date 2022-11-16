@@ -1,7 +1,7 @@
 import React from 'react';
-import DetailsCard from './details-card/details-card';
-import fullStackLottie from '../assets/web-dev.json';
 import mobileLottie from '../assets/lottie_mobile_development.json';
+import fullStackLottie from '../assets/web-dev.json';
+import DetailsCard from './details-card/details-card';
 
 const mobileLottieConfig = {
   loop: true,
