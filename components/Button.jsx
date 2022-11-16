@@ -7,6 +7,7 @@ export default function Button({ text }) {
       <div className="font-xl font-semibold text-text transition-opacity  animate-appear">{text}</div>
     </div>
   );
+  
 }
 
 Button.defaultProps = {
