@@ -15,7 +15,7 @@ export default function Button({ text, onClick }) {
 }
 
 Button.defaultProps = {
-  text: "I'm interested",
+  text: "I'm intrigued",
 };
 
 Button.propTypes = {
