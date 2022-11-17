@@ -1,6 +1,6 @@
 import React from 'react';
 import mobileLottie from '../public/lottie_mobile_development';
-import fullStackLottie from '../public/test.json';
+import fullStackLottie from '../public/web-dev';
 import DetailsCard from './details-card/details-card';
 
 const mobileLottieConfig = {
