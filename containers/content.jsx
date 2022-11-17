@@ -35,7 +35,6 @@ export default function Content() {
         experience="3"
         className={selectedProfession != '' ? 'z-0' : 'z-20'}
         lottieConfig={fullStackLottieConfig}
-        selectedContent={<FullStack />}
         onSelected={() => {
           setSelectedProfession(PROFESSION_FULL_STACK);
         }}
@@ -43,12 +42,13 @@ export default function Content() {
           setSelectedProfession('');
         }}
         visible={selectedProfession == '' || selectedProfession == PROFESSION_FULL_STACK}
-      />
+      >
+        <FullStack />
+      </DetailsCard>
       <DetailsCard
         title="Mobile"
         experience="4"
         className={selectedProfession != '' ? 'z-0' : 'z-20'}
-        disclaimers={['4 Freelance', '1 Professional']}
         lottieConfig={mobileLottieConfig}
         selectedContent={<Mobile />}
         onSelected={() => {
@@ -58,7 +58,9 @@ export default function Content() {
           setSelectedProfession('');
         }}
         visible={selectedProfession == '' || selectedProfession == PROFESSION_MOBILE}
-      />
+      >
+        <Mobile />
+      </DetailsCard>
     </div>
   );
 }

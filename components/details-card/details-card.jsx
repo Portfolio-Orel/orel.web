@@ -11,10 +11,10 @@ export default function DetailsCard({
   experience,
   lottieConfig,
   onSelected,
-  selectedContent,
   onSelectedDismiss,
   className,
   visible,
+  children,
 }) {
   const [lottieConfigCopy, setLottieConfigCopy] = useState(lottieConfig);
   const [isExpand, setIsExpand] = useState(false);
@@ -40,22 +40,23 @@ export default function DetailsCard({
         stopLottie(false);
         expand(false);
       }}
-      className={`h-88 w-48 p-5 transition-all bg-neutral shadow-lg shadow-shadow hover:shadow-xl flex flex-col justify-between items-center cursor-default ${className} 
+      className={`h-88 w-48 p-5 transition-all bg-neutral shadow-md shadow-shadow hover:shadow-xl flex flex-col justify-between items-center cursor-default ${className} 
         ${
           isSelected
-            ? 'h-full w-full'
-            : 'animate-floating hover:shadow-shadow hover:h-96 hover:w-48 rounded-md m-5'
+            ? 'duration-1000 h-full w-full'
+            : 'duration-300  animate-floating hover:shadow-shadow rounded-md m-5'
         } ${visible ? 'visible' : 'hidden'}`}
     >
       {!isSelected ? (
         <div>
           <div className="flex flex-col w-auto items-center justify-center">
-            <h1 className="text-text text-xl font-bold">{title}</h1>
-            <ExperienceHolder
+            <h1 className="text-text text-2xl font-bold">{title}</h1>
+            <h2 className="text-text text-l font-bold m-3">{experience} years</h2>
+            {/* <ExperienceHolder
               experience={experience}
               isDisclaimer={disclaimers ? true : false}
               className="m-4"
-            />
+            /> */}
           </div>
           {lottieConfig ? (
             <div className="w-auto flex justify-center cursor-none">
@@ -90,9 +91,9 @@ export default function DetailsCard({
           )}
         </div>
       ) : (
-        <div className="relative">
+        <div className="h-full w-full overflow-auto">
           <div
-            className="m-3 absolute cursor-pointer"
+            className="mx-4 absolute cursor-pointer left-0 duration-1000 animate-appear"
             onClick={() => {
               setIsSelected(false);
               onSelectedDismiss();
@@ -100,9 +101,9 @@ export default function DetailsCard({
           >
             <AiOutlineArrowLeft className="text-text top-0 left-0" height={40} width={40} />
           </div>
+          <div className="p-6 w-full h-full">{children}</div>
         </div>
       )}
-      {isSelected ? <selectedContent /> : ''}
     </div>
   );
 }
@@ -116,7 +117,7 @@ DetailsCard.defaultProps = {
 DetailsCard.propTypes = {
   title: PropTypes.string.isRequired,
   experience: PropTypes.string.isRequired,
-  selectedContent: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
   visible: PropTypes.bool,
   onSelected: PropTypes.func,
   onSelectedDismiss: PropTypes.func,

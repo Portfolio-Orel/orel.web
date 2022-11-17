@@ -5,7 +5,7 @@ export default function Button({ text, onClick }) {
   return (
     <div className="cursor-pointer flex justify-center items-center w-fill mx-1 mt-1 rounded-xl px-4">
       <div
-        className="font-xl font-semibold text-text transition-opacity  animate-appear"
+        className="font-xl font-semibold text-text transition-opacity animate-appear"
         onClick={() => onClick()}
       >
         {text}
