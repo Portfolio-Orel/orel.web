@@ -2,6 +2,7 @@ import React from 'react';
 import mobileLottie from '../public/lottie_mobile_development.json';
 import fullStackLottie from '../public/web-dev.json';
 import DetailsCard from './details-card/details-card';
+import Lottie from 'react-lottie';
 
 const mobileLottieConfig = {
   loop: true,
@@ -29,6 +30,12 @@ export default function Content() {
         experience="4"
         disclaimers={['4 Freelance', '1 Professional']}
         lottieConfig={mobileLottieConfig}
+      />
+      <Lottie
+        isClickToPauseDisabled={true}
+        options={fullStackLottieConfig}
+        height={140}
+        width={140}
       />
     </div>
   );
