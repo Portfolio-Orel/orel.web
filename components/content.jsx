@@ -14,7 +14,7 @@ const mobileLottieConfig = {
 const fullStackLottieConfig = {
   loop: true,
   autoplay: true,
-  animationData: fullStackLottie,
+  src: 'https://assets6.lottiefiles.com/packages/lf20_uzvwjpkq.json',
   rendererSettings: {
     preserveAspectRatio: 'xMidYMid slice',
   },
