@@ -2,6 +2,7 @@ import React from 'react';
 import mobileLottie from '../public/lottie_mobile_development';
 import fullStackLottie from '../public/web-dev';
 import DetailsCard from './details-card/details-card';
+import { Player } from '@lottiefiles/react-lottie-player';
 
 const mobileLottieConfig = {
   loop: true,
@@ -30,6 +31,13 @@ export default function Content() {
         disclaimers={['4 Freelance', '1 Professional']}
         lottieConfig={mobileLottieConfig}
       />
+      <Player
+        autoplay
+        loop
+        src="https://assets3.lottiefiles.com/packages/lf20_UJNc2t.json"
+        style={{ height: '300px', width: '300px' }}
+      >
+      </Player>
     </div>
   );
 }
