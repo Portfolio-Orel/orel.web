@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import TopBar from '../components/top-bar';
-import Content from '../components/content';
+import Content from '../containers/content';
 import Header from '../components/header';
 import Footer from '../components/footer';
 
@@ -14,7 +14,9 @@ export default function Home() {
       <TopBar />
       <Header />
       <Content />
-      <Footer />
+      <div className="absolute bottom-0">
+        <Footer />
+      </div>
     </div>
   );
 }
