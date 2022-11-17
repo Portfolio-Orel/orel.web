@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import Button from '../Button';
 
 export default function DetailsCard({ title, disclaimers, experience, lottieConfig }) {
+  console.log(lottieConfig.animationData);
+
   const [lottieConfigCopy, setLottieConfigCopy] = useState(lottieConfig);
   const [isExpand, setIsExpand] = useState(false);
 
