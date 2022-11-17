@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Lottie from 'react-lottie';
 import ExperienceHolder from './experience-holder';
 import PropTypes from 'prop-types';
-import Button from '../Button';
+import Button from '../button';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 
 export default function DetailsCard({
