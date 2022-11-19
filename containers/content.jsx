@@ -29,7 +29,7 @@ export default function Content() {
   const [selectedProfession, setSelectedProfession] = useState('');
 
   return (
-    <div className="h-full w-fill flex flex-row justify-center items-center">
+    <div className="h-full w-full flex flex-row justify-center items-center">
       <DetailsCard
         title="Full Stack"
         experience="3"

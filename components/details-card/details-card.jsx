@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Lottie from 'react-lottie';
-import ExperienceHolder from './experience-holder';
 import PropTypes from 'prop-types';
 import Button from '../button';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
@@ -40,11 +39,11 @@ export default function DetailsCard({
         stopLottie(false);
         expand(false);
       }}
-      className={`h-88 w-48 p-5 transition-all bg-neutral shadow-md shadow-shadow hover:shadow-xl flex flex-col justify-between items-center cursor-default ${className} 
+      className={`p-5 transition-all bg-neutral shadow-md shadow-shadow hover:shadow-xl flex flex-col justify-between items-center cursor-default ${className} 
         ${
           isSelected
-            ? 'duration-1000 h-full w-full'
-            : 'duration-300  animate-floating hover:shadow-shadow rounded-md m-5'
+            ? 'duration-1000 h-full w-full m-7 relative'
+            : 'duration-300 h-88 w-48 animate-floating hover:shadow-shadow rounded-md m-5'
         } ${visible ? 'visible' : 'hidden'}`}
     >
       {!isSelected ? (
@@ -52,11 +51,6 @@ export default function DetailsCard({
           <div className="flex flex-col w-auto items-center justify-center">
             <h1 className="text-text text-2xl font-bold">{title}</h1>
             <h2 className="text-text text-l font-bold m-3">{experience} years</h2>
-            {/* <ExperienceHolder
-              experience={experience}
-              isDisclaimer={disclaimers ? true : false}
-              className="m-4"
-            /> */}
           </div>
           {lottieConfig ? (
             <div className="w-auto flex justify-center cursor-none">
@@ -99,7 +93,7 @@ export default function DetailsCard({
               onSelectedDismiss();
             }}
           >
-            <AiOutlineArrowLeft className="text-text top-0 left-0" height={40} width={40} />
+            <AiOutlineArrowLeft className="text-text top-0 left-0" size={24} />
           </div>
           <div className="p-6 w-full h-full">{children}</div>
         </div>

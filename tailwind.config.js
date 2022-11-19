@@ -25,6 +25,7 @@ module.exports = {
         88: '22rem'
       },
       animation: {
+        disappear: 'disappear 0.4s ease-in-out forwards',
         appear: 'appear 0.3s ease-in-out',
         floating: 'floating 3.3s ease-in-out infinite'
       },
@@ -44,6 +45,24 @@ module.exports = {
           },
           '100%': {
             opacity: 1
+          },
+        },
+        disappear: {
+          '0%': {
+            opacity: 1
+          },
+          '25%': {
+            opacity: 0.75
+          },
+          '50%': {
+            opacity: 0.5
+          },
+          '75%': {
+            opacity: 0.25,
+          },
+          '100%': {
+            opacity: 0,
+            'z-index': -1
           },
         },
         floating: {
