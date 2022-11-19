@@ -22,9 +22,9 @@ export default function DetailsCard({
     setIsHovered(shouldExpand);
   };
 
-  const selected = (isSelected) => {
-    setIsSelected(isSelected);
-    if (isSelected) {
+  const setSelected = (selected) => {
+    setIsSelected(selected);
+    if (selected) {
       onSelected();
     } else {
       onSelectedDismiss();
@@ -36,7 +36,7 @@ export default function DetailsCard({
       <div
         className="absolute cursor-pointer left-2 top-2 duration-1000 animate-appear"
         onClick={() => {
-          selected(false);
+          setSelected(false);
         }}
         role="button"
       >
@@ -47,7 +47,7 @@ export default function DetailsCard({
   );
 
   const notSelectedContent = () => (
-    <div onClick={() => selected(true)} className="cursor-pointer">
+    <div onClick={() => setSelected(true)} className="cursor-pointer" role="button">
       <div className="flex flex-col w-auto items-center justify-center">
         <h1 className="text-text text-2xl font-bold">{title}</h1>
         <h2 className="text-text text-l font-bold m-3">{experience} years</h2>
@@ -71,7 +71,7 @@ export default function DetailsCard({
       {isHovered ? (
         <Button
           onClick={() => {
-            selected(true);
+            setSelected(true);
           }}
         />
       ) : (
