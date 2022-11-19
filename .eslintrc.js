@@ -12,8 +12,12 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["react"],
+  ignorePatterns: [
+    'node_modules/*',
+    '.next/*',
+    '.out/*',
+    '!.prettierrc.js',
+    'tailwind.config.js',
+  ],
   rules: {},
-  extends: [
-    "prettier"
-  ]
 };

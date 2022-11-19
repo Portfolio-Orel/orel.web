@@ -1,3 +1,4 @@
+import React from 'react';
 import Head from 'next/head';
 
 export default function MobileHeader() {
@@ -5,7 +6,7 @@ export default function MobileHeader() {
     <div className="flex flex-col w-fit p-4 pt-8">
       <Head>
         <title>Orel Zilberman</title>
-        <link rel="icon" href="/resume.ico" />
+        <link rel="icon" href="/icon.png" />
       </Head>
       <h1 className="text-4xl text-text-secondary">Hi, I'm Orel.</h1>
       <h3 className="text-3xl font-bold  text-text">I'm a software developer. </h3>

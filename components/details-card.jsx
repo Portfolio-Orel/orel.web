@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Lottie from 'react-lottie';
 import PropTypes from 'prop-types';
-import Button from '../button';
+import Button from './button';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 
 export default function DetailsCard({

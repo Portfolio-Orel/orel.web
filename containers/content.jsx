@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import mobileLottie from '../public/lottie_mobile_development.json';
-import fullStackLottie from '../public/web-dev.json';
-import DetailsCard from '../components/details-card/details-card';
+import fullStackLottie from '../public/lottie_web_development.json';
+import DetailsCard from '../components/details-card';
 import Mobile from './mobile';
 import FullStack from './fullstack';
 
