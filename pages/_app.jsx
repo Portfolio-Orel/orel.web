@@ -1,8 +1,11 @@
+/* eslint-disable */
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import '../styles/globals.css';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import TopBar from '../components/top-bar';
+import { useRouter } from 'next/router';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -43,3 +46,8 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp;
+
+MyApp.propTypes = {
+  Component: PropTypes.func,
+  pageProps: PropTypes.object,
+};

@@ -7,6 +7,7 @@ export default function Button({ text, onClick }) {
       <div
         className="font-xl font-semibold text-text transition-opacity animate-appear"
         onClick={() => onClick()}
+        role="button"
       >
         {text}
       </div>

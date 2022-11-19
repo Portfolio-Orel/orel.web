@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Lottie from 'react-lottie';
 import PropTypes from 'prop-types';
-import Button from './button';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
+import Button from './button';
 
 export default function DetailsCard({
   title,
@@ -54,12 +54,7 @@ export default function DetailsCard({
           </div>
           {lottieConfig ? (
             <div className="w-auto flex justify-center cursor-none">
-              <Lottie
-                isClickToPauseDisabled={true}
-                options={lottieConfigCopy}
-                height={140}
-                width={140}
-              />
+              <Lottie isClickToPauseDisabled options={lottieConfigCopy} height={140} width={140} />
             </div>
           ) : (
             ''
@@ -92,6 +87,7 @@ export default function DetailsCard({
               setIsSelected(false);
               onSelectedDismiss();
             }}
+            role="button"
           >
             <AiOutlineArrowLeft className="text-text top-0 left-0" size={24} />
           </div>
@@ -106,6 +102,9 @@ DetailsCard.defaultProps = {
   onSelected: () => {},
   onSelectedDismiss: () => {},
   visible: true,
+  disclaimers: [],
+  lottieConfig: null,
+  className: '',
 };
 
 DetailsCard.propTypes = {
@@ -116,6 +115,6 @@ DetailsCard.propTypes = {
   onSelected: PropTypes.func,
   onSelectedDismiss: PropTypes.func,
   disclaimers: PropTypes.arrayOf(PropTypes.string),
-  lottieConfig: PropTypes.any,
+  lottieConfig: PropTypes.object,
   className: PropTypes.string,
 };

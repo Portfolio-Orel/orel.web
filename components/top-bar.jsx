@@ -8,13 +8,7 @@ export default function TopBar({ className }) {
   return (
     <div className={`w-screen px-10 pt-2 flex justify-between ${className}`}>
       <Link href={'/'} className="text-text  text-xl">
-        <Image 
-          src="/icon.png"
-          alt="Orel Zilberman icon"
-          width={40}
-          height={40}
-
-        />
+        <Image src="/icon.png" alt="Orel Zilberman icon" width={40} height={40} />
       </Link>
       <div className="flex space-x-3">
         {items.map((item) => (
@@ -26,6 +20,10 @@ export default function TopBar({ className }) {
     </div>
   );
 }
+
+TopBar.defaultProps = {
+  className: '',
+};
 
 TopBar.propTypes = {
   className: PropTypes.string,
