@@ -15,85 +15,87 @@ export default function DetailsCard({
   visible,
   children,
 }) {
-  const [lottieConfigCopy, setLottieConfigCopy] = useState(lottieConfig);
-  const [isExpand, setIsExpand] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
 
-  const stopLottie = (shouldStop = true) => {
-    const newLottieConfig = { ...lottieConfig };
-    newLottieConfig.autoPlay = shouldStop;
-    setLottieConfigCopy(newLottieConfig);
+  const hovered = (shouldExpand = true) => {
+    setIsHovered(shouldExpand);
   };
 
-  const expand = (shouldExpand = true) => {
-    setIsExpand(shouldExpand);
+  const selected = (isSelected) => {
+    setIsSelected(isSelected);
+    if (isSelected) {
+      onSelected();
+    } else {
+      onSelectedDismiss();
+    }
   };
+
+  const selectedContent = () => (
+    <div className="h-full w-full overflow-auto">
+      <div
+        className="absolute cursor-pointer left-2 top-2 duration-1000 animate-appear"
+        onClick={() => {
+          selected(false);
+        }}
+        role="button"
+      >
+        <AiOutlineArrowLeft className="text-text" size={24} />
+      </div>
+      <div className="p-6 w-full h-full">{children}</div>
+    </div>
+  );
+
+  const notSelectedContent = () => (
+    <div onClick={() => selected(true)} className="cursor-pointer">
+      <div className="flex flex-col w-auto items-center justify-center">
+        <h1 className="text-text text-2xl font-bold">{title}</h1>
+        <h2 className="text-text text-l font-bold m-3">{experience} years</h2>
+      </div>
+      {lottieConfig ? (
+        <div className="w-auto flex justify-center cursor-none">
+          <Lottie isClickToPauseDisabled options={lottieConfig} height={140} width={140} />
+        </div>
+      ) : (
+        ''
+      )}
+      <div className="h-1/6">
+        {disclaimers
+          ? disclaimers.map((disclaimer) => (
+              <div key={disclaimer} className="text-sm text-text-secondary">
+                * {disclaimer}
+              </div>
+            ))
+          : ''}
+      </div>
+      {isHovered ? (
+        <Button
+          onClick={() => {
+            selected(true);
+          }}
+        />
+      ) : (
+        ''
+      )}
+    </div>
+  );
 
   return (
     <div
       onMouseEnter={() => {
-        stopLottie(true);
-        expand(true);
+        hovered(true);
       }}
       onMouseLeave={() => {
-        stopLottie(false);
-        expand(false);
+        hovered(false);
       }}
-      className={`p-5 transition-all bg-neutral shadow-md shadow-shadow hover:shadow-xl flex flex-col justify-between items-center cursor-default ${className} 
+      className={`p-5 mt-5 transition-all bg-neutral shadow-md shadow-shadow hover:shadow-xl flex flex-col justify-between items-center cursor-default ${className} 
         ${
           isSelected
-            ? 'duration-1000 h-full w-full m-7 relative'
-            : 'duration-300 h-88 w-48 animate-floating hover:shadow-shadow rounded-md m-5'
+            ? 'duration-1000 h-full w-full relative'
+            : 'duration-700 h-88 w-48 animate-floating hover:shadow-shadow rounded-md m-5'
         } ${visible ? 'visible' : 'hidden'}`}
     >
-      {!isSelected ? (
-        <div>
-          <div className="flex flex-col w-auto items-center justify-center">
-            <h1 className="text-text text-2xl font-bold">{title}</h1>
-            <h2 className="text-text text-l font-bold m-3">{experience} years</h2>
-          </div>
-          {lottieConfig ? (
-            <div className="w-auto flex justify-center cursor-none">
-              <Lottie isClickToPauseDisabled options={lottieConfigCopy} height={140} width={140} />
-            </div>
-          ) : (
-            ''
-          )}
-          <div className="h-1/6">
-            {disclaimers
-              ? disclaimers.map((disclaimer) => (
-                  <div key={disclaimer} className="text-sm text-text-secondary">
-                    * {disclaimer}
-                  </div>
-                ))
-              : ''}
-          </div>
-          {isExpand ? (
-            <Button
-              onClick={() => {
-                setIsSelected(true);
-                onSelected();
-              }}
-            />
-          ) : (
-            ''
-          )}
-        </div>
-      ) : (
-        <div className="h-full w-full overflow-auto">
-          <div
-            className="mx-4 absolute cursor-pointer left-0 duration-1000 animate-appear"
-            onClick={() => {
-              setIsSelected(false);
-              onSelectedDismiss();
-            }}
-            role="button"
-          >
-            <AiOutlineArrowLeft className="text-text top-0 left-0" size={24} />
-          </div>
-          <div className="p-6 w-full h-full">{children}</div>
-        </div>
-      )}
+      {!isSelected ? notSelectedContent() : selectedContent()}
     </div>
   );
 }

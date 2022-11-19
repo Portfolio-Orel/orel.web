@@ -6,7 +6,7 @@ import Image from 'next/image';
 const items = [{ title: 'About', page: 'about' }];
 export default function TopBar({ className }) {
   return (
-    <div className={`w-screen px-10 pt-2 flex justify-between ${className}`}>
+    <div className={`w-screen px-10 pt-3 flex justify-between ${className}`}>
       <Link href={'/'} className="text-text  text-xl">
         <Image src="/icon.png" alt="Orel Zilberman icon" width={40} height={40} />
       </Link>

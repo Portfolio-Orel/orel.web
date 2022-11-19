@@ -32,7 +32,7 @@ export default function Content() {
     <div className="h-full w-full flex flex-row justify-center items-center">
       <DetailsCard
         title="Full Stack"
-        experience="3"
+        experience="3.5"
         className={selectedProfession != '' ? 'z-0' : 'z-20'}
         lottieConfig={fullStackLottieConfig}
         onSelected={() => {

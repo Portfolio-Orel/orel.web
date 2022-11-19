@@ -6,6 +6,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import TopBar from '../components/top-bar';
 import { useRouter } from 'next/router';
+import Footer from '../components/footer';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -14,11 +15,14 @@ function MyApp({ Component, pageProps }) {
   return (
     <div className="h-screen w-screen bg-background font-Poppins flex flex-col">
       <TopBar className={'z-20'} />
+      <div className="absolute bottom-0 z-20">
+        <Footer />
+      </div>
       <AnimatePresence>
         <motion.div
-          className={`h-full w-full pt-8 ${isAnimating ? 'absolute overflow-hidden z10' : ''}`} // Trick to make the animations of the 2 pages overlap smoothly
+          className={`h-full w-full ${isAnimating ? 'absolute overflow-hidden z10 pt-16' : 'pt-4.5'}`} // Trick to make the animations of the 2 pages overlap smoothly
           onAnimationStart={() => setIsAnimating(true)}
-          onAnimationEnd={() => setIsAnimating(false)}
+          onAnimationEndCapture={() => setIsAnimating(false)}
           key={router.route}
           initial="initialState"
           animate="animateState"

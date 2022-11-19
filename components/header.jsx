@@ -3,7 +3,7 @@ import Head from 'next/head';
 
 export default function MobileHeader() {
   return (
-    <div className="flex flex-col w-fit p-4 pt-8">
+    <div className="flex flex-col w-fit px-4">
       <Head>
         <title>Orel Zilberman</title>
         <link rel="icon" href="/icon.png" />
