@@ -1,3 +1,27 @@
 {
-  "about": "My name is Orel Zilberman. I am a passionate programmer with a BSc. in Software Engineer (Since 2018). \nI have experience in multiple platforms, ranging from Web to native Android and iOS mobile development and a touch of cross platform (React Native).\nI love to explore new topics and to learn as much as I can.\nRecently I became a Udemy fan with a 3 certificates (and counting) (Swift+Swiftui, 60hrs, Machine Learning 43hrs, Cyber Security part 1 13hrs).\n\n\nI am an active developer with critical thinking. I take part in discussions about the future of the development and say what I think.\nI am a good team player and a solo one as well. I have a proven passion for challenges and learning and I am not afraid of hard work. I am highly dedicated to what it isz I am doing and I keep in tune with new developments.\n \nYou will find high level summaries of my experience/education in my resume.\nIn my github you will find projects that will give you a sense of the technologies that I have worked with."
+  "about": {
+    "paragraphs": [
+      {
+        "lines": [
+          "My name is Orel Zilberman. I am a passionate programmer with a BSc. in Software Engineer (Since 2018).",
+          "I have experience in multiple platforms, ranging from Web to native Android and iOS mobile development and a touch of cross platform (React Native).",
+          "I love to explore new topics and to learn as much as I can.",
+          "Recently I became a Udemy fan with a 3 certificates (and counting) (Swift+Swiftui,60hrs, Machine Learning 43hrs, Cyber Security part 1 13hrs)."
+        ]
+      },
+      {
+        "lines": [
+          "I am an active developer with critical thinking. I take part in discussions about the future of the development and say what I think.",
+          "I am a good team player and a solo one as well. I have a proven passion for challenges and learning and I am not afraid of hard work.",
+          "I am highly dedicated to what it isz I am doing and I keep in tune with new developments."
+        ]
+      },
+      {
+        "lines": [
+          "You will find high level summaries of my experience/education in my resume.",
+          "In my github you will find projects that will give you a sense of the technologies that I have worked with."
+        ]
+      }
+    ]
+  }
 }
