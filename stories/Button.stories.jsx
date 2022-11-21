@@ -7,7 +7,11 @@ export default {
   component: Button,
 };
 
-const Template = (args) => <Button {...args} />;
+const Template = (args) => (
+  <div className="bg-background h-screen w-screen flex items-center justify-center">
+    <Button {...args} />
+  </div>
+);
 
 export const Primary = Template.bind({});
 Primary.args = {

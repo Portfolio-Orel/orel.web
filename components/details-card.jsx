@@ -70,6 +70,7 @@ export default function DetailsCard({
       </div>
       {isHovered ? (
         <Button
+          type="tertiary"
           onClick={() => {
             setSelected(true);
           }}

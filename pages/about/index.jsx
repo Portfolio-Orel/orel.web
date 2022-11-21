@@ -7,31 +7,35 @@ function Paragraph(paragraph) {
   function buildPragraph() {
     const { lines } = paragraph;
     return lines.map((line) => (
-      <span key={line} className="text-text text-lg">
+      <span key={line} className="text-text text-2xl">
         {line}
       </span>
     ));
   }
 
-  return <body className="text-text text-lg font-light">{buildPragraph()}</body>;
+  return <div className="text-text text-lg font-light">{buildPragraph()}</div>;
 }
 
 export default function About() {
   return (
-    <div className="h-screen w-screen flex flex-col items-center justify-center">
+    <div className="h-full w-full flex flex-col justify-center items-center">
+      <div className='flex flex-col justify-center align-center mx-96'>
       {data.about.paragraphs
         ? data.about.paragraphs.map((paragraph) => (
             <>
               {Paragraph(paragraph)} <br />
             </>
           ))
-        : 'Hello'}
-      <Link className="text-text" href="files/cover-letter.pdf" target="_blank" rel="noreferrer">
-        <Button text="Cover Letter" type="secondary" />
-      </Link>
-      <Link href="files/resume.pdf" className="text-text" target="_blank" rel="noreferrer">
-        <Button text="Resume" type="secondary" />
-      </Link>
+        : ''}
+        </div>
+      <div className="flex flex-row">
+        {/* <Link className="text-text" href="files/cover-letter.pdf" target="_blank" rel="noreferrer">
+          <Button text="Cover Letter" type="secondary" />
+        </Link> */}
+        <Link href="files/resume.pdf" className="text-text" target="_blank" rel="noreferrer">
+          <Button text="Resume" type="secondary" />
+        </Link>
+      </div>
     </div>
   );
 }

@@ -10,58 +10,22 @@ const types = [TYPE_PRIMARY, TYPE_SECONDARY, TYPE_TERTIARY];
 export default function Button({ text, type, onClick }) {
   const buttonType = types.includes(type) ? type : TYPE_PRIMARY;
 
-  function getButton() {
+  function getButtonClassName() {
     switch (buttonType) {
       case TYPE_PRIMARY:
-        return <ButtonPrimary text={text} onClick={onClick} />;
+        return 'text-text bg-primary font-xl font-semibold text-text rounded-lg';
       case TYPE_SECONDARY:
-        return <ButtonSecondary text={text} onClick={onClick} />;
+        return 'text-text bg-text-secondary font-xl font-semibold text-text px-4 py-2 rounded-lg shadow-md shadow-shadow';
       case TYPE_TERTIARY:
-        return <ButtonTertiary text={text} onClick={onClick} />;
+        return 'text-text bg-neutral font-xl font-semibold text-text pd-4 rounded-lg';
       default:
-        return <ButtonPrimary text={text} onClick={onClick} />;
+        return 'bg-primary font-xl font-semibold text-text rounded-lg';
     }
   }
 
   return (
-    <div className="cursor-pointer flex justify-center items-center w-fill mx-1 mt-1 rounded-xl px-4">
-      {getButton(text, onClick)}
-    </div>
-  );
-}
-
-function ButtonPrimary({ text, onClick }) {
-  return (
     <div
-      className="bg-primary font-xl font-semibold text-text transition-opacity animate-appear"
-      key="button-primary"
-      role="button"
-      onClick={() => onClick()}
-    >
-      {text}
-    </div>
-  );
-}
-
-function ButtonSecondary({ text, onClick }) {
-  return (
-    <div
-      className="bg-secondary font-xl font-semibold text-text transition-opacity animate-appear"
-      key="button-secondary"
-      role="button"
-      onClick={() => onClick()}
-    >
-      {text}
-    </div>
-  );
-}
-
-function ButtonTertiary({ text, onClick }) {
-  return (
-    <div
-      className="bg-neutral font-xl font-semibold text-text transition-opacity animate-appear"
-      key="button-tertiary"
-      role="button"
+      className={`cursor-pointer flex justify-center items-center w-fill mx-1 mt-1 rounded-xl px-4 ${getButtonClassName()}`}
       onClick={() => onClick()}
     >
       {text}
