@@ -27,6 +27,7 @@ export default function Button({ text, type, onClick }) {
     <div
       className={`cursor-pointer flex justify-center items-center w-fill mx-1 mt-1 rounded-xl px-4 ${getButtonClassName()}`}
       onClick={() => onClick()}
+      role="button"
     >
       {text}
     </div>
