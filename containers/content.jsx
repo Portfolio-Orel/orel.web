@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import mobileLottie from '../public/lottie_mobile_development.json';
 import fullStackLottie from '../public/lottie_web_development.json';
+import certificateLottie from '../public/lottie_certificate.json';
 import DetailsCard from '../components/details-card';
 import Mobile from './mobile';
 import FullStack from './fullstack';
+import Certificates from './certificates';
 
 const mobileLottieConfig = {
   loop: true,
@@ -22,8 +24,19 @@ const fullStackLottieConfig = {
   },
 };
 
-const PROFESSION_FULL_STACK = 'profession_full_stack';
-const PROFESSION_MOBILE = 'profession_android';
+const certificateLottieConfig = {
+  loop: false,
+  autoplay: true,
+  animationData: certificateLottie,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice',
+  },
+  speed: 0.2,
+};
+
+const TOPIC_FULL_STACK = 'topic_full_stack';
+const TOPIC_MOBILE = 'topic_android';
+const TOPIC_CERTIFICATES = 'topic_certificates';
 
 export default function Content() {
   const [selectedProfession, setSelectedProfession] = useState('');
@@ -36,12 +49,12 @@ export default function Content() {
         className={selectedProfession != '' ? 'z-0' : 'z-20'}
         lottieConfig={fullStackLottieConfig}
         onSelected={() => {
-          setSelectedProfession(PROFESSION_FULL_STACK);
+          setSelectedProfession(TOPIC_FULL_STACK);
         }}
         onSelectedDismiss={() => {
           setSelectedProfession('');
         }}
-        visible={selectedProfession == '' || selectedProfession == PROFESSION_FULL_STACK}
+        visible={selectedProfession == '' || selectedProfession == TOPIC_FULL_STACK}
       >
         <FullStack />
       </DetailsCard>
@@ -50,16 +63,29 @@ export default function Content() {
         experience="4"
         className={selectedProfession != '' ? 'z-0' : 'z-20'}
         lottieConfig={mobileLottieConfig}
-        selectedContent={<Mobile />}
         onSelected={() => {
-          setSelectedProfession(PROFESSION_MOBILE);
+          setSelectedProfession(TOPIC_MOBILE);
         }}
         onSelectedDismiss={() => {
           setSelectedProfession('');
         }}
-        visible={selectedProfession == '' || selectedProfession == PROFESSION_MOBILE}
+        visible={selectedProfession == '' || selectedProfession == TOPIC_MOBILE}
       >
         <Mobile />
+      </DetailsCard>
+      <DetailsCard
+        title="Certificates"
+        className={selectedProfession != '' ? 'z-0' : 'z-20'}
+        lottieConfig={certificateLottieConfig}
+        onSelected={() => {
+          setSelectedProfession(TOPIC_CERTIFICATES);
+        }}
+        onSelectedDismiss={() => {
+          setSelectedProfession('');
+        }}
+        visible={selectedProfession == '' || selectedProfession == TOPIC_CERTIFICATES}
+      >
+        <Certificates />
       </DetailsCard>
     </div>
   );
