@@ -21,6 +21,9 @@ module.exports = {
       shadow: 'rgba(255, 255, 255, 0.2)',
     },
     extend: {
+      gridTemplateRows: {
+        'layout': '65px auto 20px'
+      },
       padding: {
         '4.5': '1.125rem',
       },
@@ -29,13 +32,16 @@ module.exports = {
       },
       animation: {
         disappear: 'disappear 0.4s ease-in-out forwards',
-        appear: 'appear 0.3s ease-in-out',
-        floating: 'floating 3.3s ease-in-out infinite'
+        appear: 'appear 0.3s ease-in-out forwards',
+        floating: 'floating 3.3s ease-in-out infinite',
+        'expand-appear': 'expand-appear 0.3s ease-in-out forwards',
+        'collapse-disappear': 'collapse-disappear 0.3s ease-in-out forwards',
       },
       keyframes: {
         appear: {
           '0%': {
             opacity: 0
+
           },
           '25%': {
             opacity: 0.25
@@ -80,6 +86,40 @@ module.exports = {
           '100%': {
             'box-shadow': '0 5px 15px 0px shadow',
             transform: 'translatey(0px)',
+          },
+        },
+        'expand-appear': {
+          '0%': {
+            width: '0%',
+            height: '0%',
+            opacity: '0',
+          },
+          '50%': {
+            width: '50%',
+            height: '50%',
+            opacity: '0.5',
+          },
+          '100%': {
+            width: '100%',
+            height: '100%',
+            opacity: '1',
+          },
+        },
+        'collapse-disappear': {
+          '0%': {
+            width: '100%',
+            height: '100%',
+            opacity: '1',
+          },
+          '50%': {
+            width: '50%',
+            height: '50%',
+            opacity: '0.5',
+          },
+          '100%': {
+            width: '100%',
+            height: '100%',
+            opacity: '0',
           },
         },
       },
