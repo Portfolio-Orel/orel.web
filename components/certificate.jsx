@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Image from 'next/image';
 import Link from 'next/link';
-import Button from '../components/button';
+import Button from './button';
 
 export default function Certificate({ certificate }) {
   return (
