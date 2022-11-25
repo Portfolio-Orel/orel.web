@@ -24,6 +24,7 @@ export default function DetailsCard({
 
   const setSelected = (selected) => {
     setIsSelected(selected);
+    setIsHovered(selected);
     if (selected) {
       onSelected();
     } else {
@@ -32,7 +33,7 @@ export default function DetailsCard({
   };
 
   const selectedContent = () => (
-    <div className="h-full w-full overflow-auto">
+    <div className="h-full w-full overflow-auto flex flex-col items-center justify-center">
       <div
         className="absolute cursor-pointer left-2 top-2 duration-1000 animate-appear"
         onClick={() => {
@@ -42,6 +43,7 @@ export default function DetailsCard({
       >
         <AiOutlineArrowLeft className="text-text" size={24} />
       </div>
+      <h1 className="text-text text-3xl font-bold">{title}</h1>
       <div className="p-6 w-full h-full">{children}</div>
     </div>
   );
@@ -50,7 +52,9 @@ export default function DetailsCard({
     <div onClick={() => setSelected(true)} className="cursor-pointer" role="button">
       <div className="flex flex-col w-auto items-center justify-center">
         <h1 className="text-text text-2xl font-bold">{title}</h1>
-        <h2 className="text-text text-l font-bold m-3">{experience} years</h2>
+        <div className="text-text text-l font-bold m-3 h-5">
+          <h2>{experience ? `${experience} years` : ''}</h2>
+        </div>
       </div>
       {lottieConfig ? (
         <div className="w-auto flex justify-center cursor-none">
@@ -69,12 +73,14 @@ export default function DetailsCard({
           : ''}
       </div>
       {isHovered ? (
-        <Button
-          type="tertiary"
-          onClick={() => {
-            setSelected(true);
-          }}
-        />
+        <div className="absolute bottom-6 flex items-center justify-center transition-all animate-appear">
+          <Button
+            type="tertiary"
+            onClick={() => {
+              setSelected(true);
+            }}
+          />
+        </div>
       ) : (
         ''
       )}
@@ -104,6 +110,7 @@ export default function DetailsCard({
 DetailsCard.defaultProps = {
   onSelected: () => {},
   onSelectedDismiss: () => {},
+  experience: null,
   visible: true,
   disclaimers: [],
   lottieConfig: null,
@@ -112,8 +119,8 @@ DetailsCard.defaultProps = {
 
 DetailsCard.propTypes = {
   title: PropTypes.string.isRequired,
-  experience: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
+  experience: PropTypes.string,
   visible: PropTypes.bool,
   onSelected: PropTypes.func,
   onSelectedDismiss: PropTypes.func,

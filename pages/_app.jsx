@@ -13,14 +13,13 @@ function MyApp({ Component, pageProps }) {
   const [isAnimating, setIsAnimating] = useState(false);
 
   return (
-    <div className="h-screen w-screen bg-background font-Poppins flex flex-col">
-      <TopBar className={'z-20'} />
-      <div className="absolute bottom-0 z-20">
-        <Footer />
-      </div>
+    <div className="h-screen w-screen bg-background font-Poppins grid grid-rows-layout overflow-hidden">
+      <TopBar className={'z-20 row-start-1 row-end-1'} />
       <AnimatePresence>
         <motion.div
-          className={`h-full w-full ${isAnimating ? 'absolute overflow-hidden z10 pt-16' : 'pt-4.5'}`} // Trick to make the animations of the 2 pages overlap smoothly
+          className={`h-full w-full row-start-2 row-end-2 overflow-clip ${
+            isAnimating ? 'absolute overflow-hidden z10 pt-16' : 'pt-4.5'
+          }`} // Trick to make the animations of the 2 pages overlap smoothly
           onAnimationStart={() => setIsAnimating(true)}
           onAnimationEndCapture={() => setIsAnimating(false)}
           key={router.route}
@@ -45,6 +44,9 @@ function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         </motion.div>
       </AnimatePresence>
+      <div className="row-start-3 row-end-3 flex items-center justify-center">
+        <Footer />
+      </div>
     </div>
   );
 }
