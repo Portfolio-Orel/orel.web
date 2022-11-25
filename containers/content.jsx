@@ -15,6 +15,7 @@ const mobileLottieConfig = {
     preserveAspectRatio: 'xMidYMid slice',
   },
 };
+
 const fullStackLottieConfig = {
   loop: true,
   autoplay: true,
