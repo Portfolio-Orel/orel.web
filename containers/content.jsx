@@ -6,7 +6,7 @@ import DetailsCard from '../components/details-card';
 import Mobile from './mobile';
 import FullStack from './fullstack';
 import Certificates from './certificates';
-
+import { useSelector } from 'react-redux';
 const mobileLottieConfig = {
   loop: true,
   autoplay: true,
@@ -41,6 +41,8 @@ const TOPIC_CERTIFICATES = 'topic_certificates';
 
 export default function Content() {
   const [selectedProfession, setSelectedProfession] = useState('');
+  const user = useSelector((state) => state?.user);
+  console.log(user);
 
   return (
     <div className="h-full w-full flex flex-row justify-center items-center">
