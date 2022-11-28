@@ -11,6 +11,8 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.0",
+    "axios": "^1.2.0",
     "eslint-config-next": "13.0.3",
     "firebase": "^9.14.0",
     "framer-motion": "^7.6.7",

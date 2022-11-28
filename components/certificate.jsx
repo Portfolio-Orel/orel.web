@@ -10,11 +10,13 @@ export default function Certificate({ certificate }) {
       <Image
         src={certificate.image ? certificate.image : ''}
         alt="certificate"
-        height={200}
-        width={200}
+        height={250}
+        width={250}
       />
       <h1 className="text-text text-2xl font-bold text-center">{certificate.title}</h1>
-      <h1 className="text-text opacity-50 text-xl font-bold text-center">{certificate.length}</h1>
+      <h1 className="text-text opacity-50 text-xl font-bold text-center">
+        {certificate.length} {certificate.units}
+      </h1>
       <Link
         href={certificate.certificatePath}
         className="text-text"

@@ -3,9 +3,7 @@ import mobileLottie from '../public/lottie_mobile_development.json';
 import fullStackLottie from '../public/lottie_web_development.json';
 import certificateLottie from '../public/lottie_certificate.json';
 import DetailsCard from '../components/details-card';
-import Mobile from './mobile';
-import FullStack from './fullstack';
-import Certificates from './certificates';
+import { useSelector } from 'react-redux';
 import Router from 'next/router';
 
 const mobileLottieConfig = {
@@ -71,9 +69,7 @@ export default function Content() {
           setSelectedProfession('');
         }}
         visible={selectedProfession == '' || selectedProfession == TOPIC_FULL_STACK}
-      >
-        <FullStack />
-      </DetailsCard>
+      />
       <DetailsCard
         title="Mobile"
         experience="4"
@@ -86,9 +82,7 @@ export default function Content() {
           setSelectedProfession('');
         }}
         visible={selectedProfession == '' || selectedProfession == TOPIC_MOBILE}
-      >
-        <Mobile />
-      </DetailsCard>
+      />
       <DetailsCard
         title="Certificates"
         className={selectedProfession != '' ? 'z-0' : 'z-20'}
@@ -100,9 +94,7 @@ export default function Content() {
           setSelectedProfession('');
         }}
         visible={selectedProfession == '' || selectedProfession == TOPIC_CERTIFICATIONS}
-      >
-        <Certificates />
-      </DetailsCard>
+      />
     </div>
   );
 }
