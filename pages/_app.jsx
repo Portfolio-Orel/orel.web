@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }) {
       <TopBar className={'z-20 row-start-1 row-end-1'} />
       <AnimatePresence>
         <motion.div
-          className={`h-full w-full row-start-2 row-end-2 overflow-clip ${
+          className={`h-full w-full row-start-2 row-end-2 overflow-auto pb-12 ${
             isAnimating ? 'absolute overflow-hidden z10 pt-16' : 'pt-4.5'
           }`} // Trick to make the animations of the 2 pages overlap smoothly
           onAnimationStart={() => setIsAnimating(true)}
@@ -44,7 +44,7 @@ function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         </motion.div>
       </AnimatePresence>
-      <div className="row-start-3 row-end-3 flex items-center justify-center">
+      <div className="row-start-3 row-end-3 flex items-center justify-center pb-2 absolute bottom-0">
         <Footer />
       </div>
     </div>
