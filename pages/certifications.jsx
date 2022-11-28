@@ -19,8 +19,6 @@ const cyberSecurityVol1 = {
 
 const certificates = [
   machineLearningCertificate,
-  machineLearningCertificate,
-  machineLearningCertificate,
   cyberSecurityVol1,
 ];
 
