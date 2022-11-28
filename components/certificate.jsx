@@ -6,7 +6,7 @@ import Button from './button';
 
 export default function Certificate({ certificate }) {
   return (
-    <div className="flex flex-col items-center justify-top w-full h-full animate-appear">
+    <div className="flex flex-col items-center justify-top w-full h-full">
       <Image
         src={certificate.image ? certificate.image : ''}
         alt="certificate"
@@ -31,6 +31,6 @@ Certificate.propTypes = {
   certificate: PropTypes.shape({
     title: PropTypes.string.isRequired,
     length: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
+    image: PropTypes.object.isRequired,
   }).isRequired,
 };

@@ -26,7 +26,7 @@ const certificates = [
 
 export default function Certificates() {
   return (
-    <div className="flex flex-col items-center justify-top w-full h-full">
+    <div className="flex flex-col items-center justify-top w-full h-full overflow-auto scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100">
       {certificates.map((certificate) => (
         <div className="m-5">
           <Certificate certificate={certificate} />
