@@ -6,7 +6,7 @@ import Button from './button';
 
 export default function Certificate({ certificate }) {
   return (
-    <div className="flex flex-col items-center justify-top w-full h-full animate-expand-appear">
+    <div className="flex flex-col items-center justify-top w-full h-full animate-appear">
       <Image
         src={certificate.image ? certificate.image : ''}
         alt="certificate"

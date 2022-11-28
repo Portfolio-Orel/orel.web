@@ -22,7 +22,7 @@ module.exports = {
     },
     extend: {
       gridTemplateRows: {
-        'layout': '65px auto 20px'
+        'layout': '65px 1fr 20px'
       },
       padding: {
         '4.5': '1.125rem',
