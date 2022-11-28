@@ -10,8 +10,6 @@ export default function DetailsCard({
   lottieConfig,
   onSelected,
   className,
-  visible,
-  children,
 }) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -69,9 +67,7 @@ export default function DetailsCard({
 
 DetailsCard.defaultProps = {
   onSelected: () => {},
-  onSelectedDismiss: () => {},
   experience: null,
-  visible: true,
   disclaimers: [],
   lottieConfig: null,
   className: '',
@@ -79,9 +75,7 @@ DetailsCard.defaultProps = {
 
 DetailsCard.propTypes = {
   title: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
   experience: PropTypes.string,
-  visible: PropTypes.bool,
   onSelected: PropTypes.func,
   disclaimers: PropTypes.arrayOf(PropTypes.string),
   lottieConfig: PropTypes.object,
