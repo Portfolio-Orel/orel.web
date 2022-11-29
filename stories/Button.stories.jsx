@@ -20,6 +20,7 @@ Primary.args = {
   onClick: () => {
     console.log('Primary button clicked');
   },
+  isLoading: false,
 };
 
 export const Secondary = Template.bind({});
@@ -29,6 +30,7 @@ Secondary.args = {
   onClick: () => {
     console.log('Secondary button clicked');
   },
+  isLoading: false,
 };
 
 export const Tertiary = Template.bind({});
@@ -38,4 +40,5 @@ Tertiary.args = {
   onClick: () => {
     console.log('Tertiary button clicked');
   },
+  isLoading: false,
 };

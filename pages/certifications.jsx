@@ -30,9 +30,7 @@ Certificates.propTypes = {
 };
 
 export async function getServerSideProps() {
-  console.log(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/certifications`);
   const { data } = await axios.get(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/certifications`);
-  console.log(data);
   return {
     props: data,
   };
