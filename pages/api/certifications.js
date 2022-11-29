@@ -1,6 +1,6 @@
 const axios = require('axios');
-//const res = await fetch(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/certifications`);
-export default async (_, res) => {
+
+const getCeritifcations = async (_, res) => {
     const { data } = await axios({
         method: 'get',
         url: `${process.env.NEXT_PUBLIC_BASE_URL}/getCertifications`,
@@ -15,3 +15,5 @@ export default async (_, res) => {
         res.status(500).json({ error: error.message });
     }
 }
+
+export default getCeritifcations;
