@@ -1,34 +1,39 @@
+/* eslint-disable */
 import React from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
 import Certificate from '../components/certificate';
-import machineLearningImage from '../public/courses/Machine_Learning.jpg';
-import cyberSecurityVol1Image from '../public/courses/Cyber_Security_1.jpg';
+import ProfessionWrapper from '../containers/profession-wrapper';
 
-const machineLearningCertificate = {
-  title: 'Machine Learning A-Z™: Hands-On Python & R In Data Science',
-  length: '43 hours',
-  key: 'machine-learning',
-  image: machineLearningImage,
-  certificatePath: 'courses/certificates/Certificate_Machine_Learning.jpg',
-};
-
-const cyberSecurityVol1 = {
-  title: 'The Complete Cyber Security Course : Hackers Exposed!',
-  length: '12 hours',
-  key: 'Cyber_Security_1',
-  image: cyberSecurityVol1Image,
-  certificatePath: 'courses/certificates/Certificate_Cyber_Security_1.jpg',
-};
-
-const certificates = [machineLearningCertificate, cyberSecurityVol1];
-
-export default function Certificates() {
+export default function Certificates(certificates) {
   return (
-    <div className="flex flex-col items-center justify-top w-full h-full overflow-auto scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100">
-      {certificates.map((certificate) => (
-        <div key={certificate.key} className="m-5">
-          <Certificate certificate={certificate} />
-        </div>
-      ))}
-    </div>
+    <ProfessionWrapper title={'Cetificates'}>
+      <div className="flex flex-col items-center justify-top w-full h-full overflow-auto scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100">
+        {Object.keys(certificates).map((id) => (
+          <div key={id} className="m-5">
+            <Certificate certificate={certificates[id]} />
+          </div>
+        ))}
+      </div>
+    </ProfessionWrapper>
   );
+}
+
+
+
+Certificates.propTypes = {
+  certificates: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    length: PropTypes.number.isRequired,
+    image: PropTypes.string.isRequired,
+    units: PropTypes.string.isRequired,
+    certificatePath: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+export async function getServerSideProps() {
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/certifications`);
+  return {
+    props: res.data,
+  };
 }

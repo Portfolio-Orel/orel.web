@@ -1,14 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (config, _) =>
-    {
-        config.module.rules.push({
-            test: /\.pdf$/i,
-            type: 'asset/source'
-        })
+  images: {
+    domains: ['firebasestorage.googleapis.com'],
+  },
+  webpack: (config, _) => {
+    config.module.rules.push({
+      test: /\.pdf$/i,
+      type: 'asset/source'
+    })
 
-        return config
-    },
+    return config
+  },
   reactStrictMode: true,
   swcMinify: false
 };
