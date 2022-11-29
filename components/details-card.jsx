@@ -12,17 +12,17 @@ export default function DetailsCard({
   className,
 }) {
   const [isHovered, setIsHovered] = useState(false);
-
-  const hovered = (shouldExpand = true) => {
-    setIsHovered(shouldExpand);
-  };
+  const [isClicked, setIsClicked] = useState(false);
 
   return (
     <div
-      onMouseEnter={() => hovered(true)}
-      onMouseLeave={() => hovered(false)}
-      onClick={() => onSelected()}
-      className={`p-5 mt-5 transition-all cursor-pointer bg-neutral shadow-md shadow-shadow hover:shadow-xl flex flex-col justify-between items-center cursor-default duration-700 h-88 w-48 animate-floating hover:shadow-shadow rounded-md m-5 ${className} `}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => {
+        onSelected();
+        setIsClicked(true);
+      }}
+      className={`p-5 mt-5 transition-all cursor-pointer bg-neutral shadow-md shadow-shadow hover:shadow-xl flex flex-col justify-between items-center duration-400 h-88 w-48 animate-floating hover:shadow-shadow rounded-md m-5 ${className} `}
       role="button"
     >
       <div role="button">
@@ -48,13 +48,14 @@ export default function DetailsCard({
               ))
             : ''}
         </div>
-        {isHovered ? (
-          <div className="absolute bottom-6 flex items-center justify-center transition-all animate-appear">
+        {isHovered || isClicked ? (
+          <div className="flex items-center justify-center mt-5 transition-all animate-appear">
             <Button
               type="tertiary"
               onClick={() => {
                 onSelected();
               }}
+              isLoading={isClicked}
             />
           </div>
         ) : (

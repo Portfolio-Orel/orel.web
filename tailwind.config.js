@@ -31,6 +31,7 @@ module.exports = {
         88: '22rem'
       },
       animation: {
+        pulse: 'pulse 1.7s linear infinite',
         disappear: 'disappear 0.4s ease-in-out forwards',
         appear: 'appear 0.3s ease-in-out forwards',
         floating: 'floating 3.3s ease-in-out infinite',
@@ -41,7 +42,6 @@ module.exports = {
         appear: {
           '0%': {
             opacity: 0
-
           },
           '25%': {
             opacity: 0.25
@@ -73,6 +73,27 @@ module.exports = {
             opacity: 0,
             'z-index': -1
           },
+        },
+        pulse: {
+          '0%': {
+            transform: 'scale(0.3)',
+            opacity: '0',
+          },
+          '50%': {
+            transform: 'scale(1)',
+            opacity: '0.8'
+          },
+          '75%': {
+            transform: 'scale(0.95)',
+            opacity: '0.2',
+          },
+
+          '100%': {
+            transform: 'scale(0.9)',
+            opacity: '0'
+          },
+
+
         },
         floating: {
           '0%': {

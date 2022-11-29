@@ -41,7 +41,6 @@ const TOPIC_CERTIFICATIONS = 'certifications';
 export default function Content() {
   const [selectedProfession, setSelectedProfession] = useState('');
   const user = useSelector((state) => state?.user);
-  console.log(user);
 
   const setNewRoute = () => Router.push(`/${selectedProfession}`);
 
