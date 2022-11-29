@@ -29,12 +29,22 @@ export default function Certificate({ certificate }) {
   );
 }
 
+Certificate.defaultProps = {
+  certificate: {
+    title: '',
+    length: '',
+    image: '',
+    units: '',
+    certificatePath: '',
+  },
+};
+
 Certificate.propTypes = {
   certificate: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    length: PropTypes.number.isRequired,
+    length: PropTypes.string.isRequired,
     image: PropTypes.object.isRequired,
     units: PropTypes.string.isRequired,
     certificatePath: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
 };

@@ -29,7 +29,7 @@ export default function Button({ text, type, onClick, isLoading }) {
       className={`cursor-pointer flex justify-center items-center w-fill mx-1 mt-1 text-lg ${getButtonClassName()}`}
     >
       {isLoading ? (
-        <Loading size={6} />
+        <Loading />
       ) : (
         <div className={`rounded-xl px-4`} onClick={() => onClick()} role="button">
           {text}
