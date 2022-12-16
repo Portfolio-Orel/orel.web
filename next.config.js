@@ -14,6 +14,9 @@ const nextConfig = {
     NEXT_PUBLIC_BASE_URL: "https://us-central1-orelsweb.cloudfunctions.net/",
     NEXT_PUBLIC_APP_BASE_URL: "https://www.orelzilberman.com",
     NEXT_PUBLIC_ENV: "production",
+    // NEXT_PUBLIC_BASE_URL: "http://127.0.0.1:5001/orelsweb/us-central1/",
+    // NEXT_PUBLIC_APP_BASE_URL: "http://localhost:3000",
+    // NEXT_PUBLIC_ENV: "dev",
   },
   webpack: (config, _) => {
     config.module.rules.push({
