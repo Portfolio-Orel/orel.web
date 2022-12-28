@@ -45,11 +45,8 @@ Certifications.propTypes = {
 
 export async function getServerSideProps() {
   try {
-    const { data } = await axios.get(
-      // `http://127.0.0.1:5001/orelsweb/us-central1/getCertifications`
-      `${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/certifications`
-    );
-    console.log(data);
+    const result = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}getCertifications`);
+    const data = await result.json();
     return {
       props: {
         certificates: data,
