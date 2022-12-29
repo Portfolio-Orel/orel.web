@@ -29,16 +29,23 @@ const Content = (certifications) => (
 );
 
 Certifications.defaultProps = {
+  certificates: {
+    title: '',
+    length: '',
+    image: '',
+    units: '',
+    certificatePath: '',
+  },
   error: null,
 };
 
 Certifications.propTypes = {
   certificates: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    length: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    units: PropTypes.string.isRequired,
-    certificatePath: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    length: PropTypes.number,
+    image: PropTypes.string,
+    units: PropTypes.string,
+    certificatePath: PropTypes.string,
   }),
   error: PropTypes.string,
 };
