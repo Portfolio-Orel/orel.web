@@ -22,7 +22,8 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.6.0",
     "react-lottie": "^1.2.3",
-    "react-redux": "^8.0.5"
+    "react-redux": "^8.0.5",
+    "react-unity-webgl": "^9.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
