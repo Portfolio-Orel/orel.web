@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const getCeritifcations = async (_, res) => {
+const getCeritifcations = async(_, res) => {
     const { data } = await axios({
         method: 'get',
         url: `${process.env.NEXT_PUBLIC_BASE_URL}getCertifications`,
@@ -12,7 +12,7 @@ const getCeritifcations = async (_, res) => {
     try {
         res.status(200).json(data);
     } catch (error) {
-        res.status(372).json(`${process.env.NEXT_PUBLIC_BASE_URL}/getCertifications`);
+        res.status(500).json(`${process.env.NEXT_PUBLIC_BASE_URL}/getCertifications`);
     }
 }
 

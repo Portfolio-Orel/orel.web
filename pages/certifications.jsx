@@ -29,27 +29,31 @@ const Content = (certifications) => (
 );
 
 Certifications.defaultProps = {
+  certificates: {
+    title: '',
+    length: '',
+    image: '',
+    units: '',
+    certificatePath: '',
+  },
   error: null,
 };
 
 Certifications.propTypes = {
   certificates: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    length: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    units: PropTypes.string.isRequired,
-    certificatePath: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    length: PropTypes.number,
+    image: PropTypes.string,
+    units: PropTypes.string,
+    certificatePath: PropTypes.string,
   }),
   error: PropTypes.string,
 };
 
 export async function getServerSideProps() {
   try {
-    const { data } = await axios.get(
-      // `http://127.0.0.1:5001/orelsweb/us-central1/getCertifications`
-      `${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/certifications`
-    );
-    console.log(data);
+    const result = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}getCertifications`);
+    const data = await result.json();
     return {
       props: {
         certificates: data,

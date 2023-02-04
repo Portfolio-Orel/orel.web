@@ -1,10 +1,11 @@
 import { SET_USER } from "../actions/auth";
 
-export default function authReducer(state = {}, action) {
+export default function authReducer(state = {}, action = {}) {
     switch (action.type) {
         case SET_USER:
             return {
-                ...state, user: {
+                ...state,
+                user: {
                     uid: action.payload.user.uid,
                 }
             };

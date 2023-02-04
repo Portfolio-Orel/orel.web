@@ -10,6 +10,7 @@ export default function DetailsCard({
   lottieConfig,
   onSelected,
   className,
+  key
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
@@ -24,12 +25,13 @@ export default function DetailsCard({
       }}
       className={`p-5 mt-5 transition-all cursor-pointer bg-neutral shadow-md shadow-shadow hover:shadow-xl flex flex-col justify-between items-center duration-400 h-88 w-48 animate-floating hover:shadow-shadow rounded-md m-5 ${className} `}
       role="button"
+      key = {key}
     >
       <div role="button">
         <div className="flex flex-col w-auto items-center justify-center">
-          <h1 className="text-text text-2xl font-bold">{title}</h1>
+          <h1 className="text-text text-2xl font-bold select-none">{title}</h1>
           <div className="text-text text-l font-bold m-3 h-5">
-            <h2>{experience ? `${experience} years` : ''}</h2>
+            <h2 className = "select-none">{experience ? `${experience} years` : ''}</h2>
           </div>
         </div>
         {lottieConfig ? (
@@ -39,7 +41,7 @@ export default function DetailsCard({
         ) : (
           ''
         )}
-        <div className="h-1/6">
+        <div className="h-1/6 select-none">
           {disclaimers
             ? disclaimers.map((disclaimer) => (
                 <div key={disclaimer} className="text-sm text-text-secondary">
@@ -72,6 +74,7 @@ DetailsCard.defaultProps = {
   disclaimers: [],
   lottieConfig: null,
   className: '',
+  key: Date.now().toString(),
 };
 
 DetailsCard.propTypes = {
@@ -81,4 +84,5 @@ DetailsCard.propTypes = {
   disclaimers: PropTypes.arrayOf(PropTypes.string),
   lottieConfig: PropTypes.object,
   className: PropTypes.string,
+  key: PropTypes.string,
 };

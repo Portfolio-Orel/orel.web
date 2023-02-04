@@ -31,7 +31,7 @@ export default function Button({ text, type, onClick, isLoading }) {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className={`rounded-xl px-4`} onClick={() => onClick()} role="button">
+        <div className={`rounded-xl px-4 select-none`} onClick={() => onClick()} role="button">
           {text}
         </div>
       )}

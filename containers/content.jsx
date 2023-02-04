@@ -6,32 +6,37 @@ import certificateLottie from '../public/lottie_certificate.json';
 import DetailsCard from '../components/details-card';
 import Button from '../components/button';
 
-const mobileLottieConfig = {
-  loop: true,
-  autoplay: true,
-  animationData: mobileLottie,
-  rendererSettings: {
-    preserveAspectRatio: 'xMidYMid slice',
-  },
+const Lottie = {
+  mobile: mobileLottie,
+  fullStack: fullStackLottie,
+  certificate: certificateLottie,
 };
 
-const fullStackLottieConfig = {
-  loop: true,
-  autoplay: true,
-  animationData: fullStackLottie,
-  rendererSettings: {
-    preserveAspectRatio: 'xMidYMid slice',
-  },
-};
-
-const certificateLottieConfig = {
-  loop: false,
-  autoplay: true,
-  animationData: certificateLottie,
-  rendererSettings: {
-    preserveAspectRatio: 'xMidYMid slice',
-  },
-  speed: 0.2,
+const GetLottieConfig = (lottie) => {
+  const genericLottieConfig = {
+    loop: true,
+    autoplay: true,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
+  switch (lottie) {
+    case Lottie.mobile:
+      genericLottieConfig.animationData = mobileLottie;
+      break;
+    case Lottie.fullStack:
+      genericLottieConfig.animationData = fullStackLottie;
+      break;
+    case Lottie.certificate:
+      genericLottieConfig.animationData = certificateLottie;
+      genericLottieConfig.loop = false;
+      genericLottieConfig.speed = 0.2;
+      break;
+    default:
+      genericLottieConfig.animationData = mobileLottie;
+      break;
+  }
+  return genericLottieConfig;
 };
 
 const TOPIC_FULL_STACK = 'fullstack';
@@ -63,7 +68,7 @@ export default function Content() {
           title="Full Stack"
           experience="4"
           className={selectedProfession !== '' ? 'z-0' : 'z-20'}
-          lottieConfig={fullStackLottieConfig}
+          lottieConfig={GetLottieConfig(Lottie.fullStack)}
           onSelected={() => {
             setSelectedProfession(TOPIC_FULL_STACK);
           }}
@@ -76,7 +81,7 @@ export default function Content() {
           title="Mobile"
           experience="4"
           className={selectedProfession !== '' ? 'z-0' : 'z-20'}
-          lottieConfig={mobileLottieConfig}
+          lottieConfig={GetLottieConfig(Lottie.mobile)}
           onSelected={() => {
             setSelectedProfession(TOPIC_MOBILE);
           }}
@@ -88,7 +93,7 @@ export default function Content() {
         <DetailsCard
           title="Certificates"
           className={selectedProfession !== '' ? 'z-0' : 'z-20'}
-          lottieConfig={certificateLottieConfig}
+          lottieConfig={GetLottieConfig(Lottie.certificate)}
           onSelected={() => {
             setSelectedProfession(TOPIC_CERTIFICATIONS);
           }}
@@ -100,7 +105,7 @@ export default function Content() {
         <Button
           onClick={() => setSelectedProfession(TOPIC_GAME)}
           className="z-20"
-          text="Or play it!"
+          text="Play it!"
         />
       </div>
     </div>

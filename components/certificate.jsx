@@ -41,10 +41,10 @@ Certificate.defaultProps = {
 
 Certificate.propTypes = {
   certificate: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    length: PropTypes.string.isRequired,
-    image: PropTypes.object.isRequired,
-    units: PropTypes.string.isRequired,
-    certificatePath: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    length: PropTypes.number,
+    image: PropTypes.string,
+    units: PropTypes.string,
+    certificatePath: PropTypes.string,
   }),
 };
