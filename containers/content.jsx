@@ -62,8 +62,9 @@ export default function Content() {
   }, []);
 
   return (
-    <div className="h-full w-full flex-column justify-center items-center">
-      <div className="h-full w-full flex flex-row justify-center items-center">
+    <div className="h-full w-full justify-center items-center">
+      <div className="h-full w-full flex flex-col justify-center items-center">
+        <div className="flex flex-row justify-center items-center">
         <DetailsCard
           title="Full Stack"
           experience="4"
@@ -103,15 +104,16 @@ export default function Content() {
           visible={selectedProfession === '' || selectedProfession === TOPIC_CERTIFICATIONS}
           isActive = {false}
         />
-        <div className="text-text flex justify-center items-center flex-col">
-          <span className="text-lg">Still in production... But you can play it!</span>
+        </div>
+      <div className="text-text flex justify-center items-center flex-col" style={{border: "1px solid rgba(255,255,255,0.3)", borderRadius: 6, padding: 16}}>
+          <span className="text-lg">Still in production... But you can test it out!</span>
           <Button
             onClick={() => setSelectedProfession(TOPIC_GAME)}
-            className="z-20"
+            className="z-20 mx-1 my-4"
             text="Play"
           />
           <span className="text-text-secondary text-xs">Do it at your own risk </span>
-          <span className="text-text-secondary text-xs">It might be a bit buggy.. ;)</span>
+          <span className="text-text-secondary text-xs">It might be a bit buggy... ;)</span>
         </div>
       </div>
     </div>

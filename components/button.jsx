@@ -8,7 +8,7 @@ const TYPE_TERTIARY = 'tertiary';
 
 const types = [TYPE_PRIMARY, TYPE_SECONDARY, TYPE_TERTIARY];
 
-export default function Button({ text, type, onClick, isLoading, isActive }) {
+export default function Button({ text, type, onClick, isLoading, isActive, className }) {
   const buttonType = types.includes(type) ? type : TYPE_PRIMARY;
 
   function getButtonClassName() {
@@ -26,7 +26,7 @@ export default function Button({ text, type, onClick, isLoading, isActive }) {
 
   return (
     <div
-      className={`cursor-pointer flex justify-center items-center w-fill mx-1 mt-1 text-lg ${getButtonClassName()}`}
+      className={`cursor-pointer flex justify-center items-center w-fill text-lg ${getButtonClassName()}  ${className}`}
     >
       {isLoading ? (
         <Loading />
@@ -53,6 +53,7 @@ Button.defaultProps = {
   onClick: () => {},
   isLoading: false,
   isActive: true,
+  className: '',
 };
 
 Button.propTypes = {
@@ -61,4 +62,5 @@ Button.propTypes = {
   type: PropTypes.oneOf(types),
   isLoading: PropTypes.bool,
   isActive: PropTypes.bool,
+  className: PropTypes.string,
 };
