@@ -109,7 +109,7 @@ export default function Content() {
           <span className="text-lg">Still in production... But you can test it out!</span>
           <Button
             onClick={() => setSelectedProfession(TOPIC_GAME)}
-            className="z-20 mx-1 my-4"
+            className="z-20 mx-1 my-4 p-2 text-2xl"
             text="Play"
           />
           <span className="text-text-secondary text-xs">Do it at your own risk </span>
