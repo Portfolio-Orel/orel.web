@@ -28,7 +28,7 @@ export default function Game() {
 
   return (
     <div className="h-full w-full m-0" id="iframeContainer" ref={iframeRef}>
-      <Unity className="h-full w-full" unityProvider={unityProvider} ref={unityFrameRef} />
+      <Unity className="h-96 w-96" unityProvider={unityProvider} ref={unityFrameRef} />
     </div>
   );
 }

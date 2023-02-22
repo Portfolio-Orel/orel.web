@@ -10,7 +10,8 @@ export default function DetailsCard({
   lottieConfig,
   onSelected,
   className,
-  key
+  key,
+  isActive,
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
@@ -20,18 +21,19 @@ export default function DetailsCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => {
+        if(!isActive) return;
         onSelected();
         setIsClicked(true);
       }}
       className={`p-5 mt-5 transition-all cursor-pointer bg-neutral shadow-md shadow-shadow hover:shadow-xl flex flex-col justify-between items-center duration-400 h-88 w-48 animate-floating hover:shadow-shadow rounded-md m-5 ${className} `}
       role="button"
-      key = {key}
+      key={key}
     >
       <div role="button">
         <div className="flex flex-col w-auto items-center justify-center">
           <h1 className="text-text text-2xl font-bold select-none">{title}</h1>
           <div className="text-text text-l font-bold m-3 h-5">
-            <h2 className = "select-none">{experience ? `${experience} years` : ''}</h2>
+            <h2 className="select-none">{experience ? `${experience} years` : ''}</h2>
           </div>
         </div>
         {lottieConfig ? (
@@ -55,9 +57,12 @@ export default function DetailsCard({
             <Button
               type="tertiary"
               onClick={() => {
-                onSelected();
+                if (isActive) {
+                  onSelected();
+                }
               }}
               isLoading={isClicked}
+              isActive={isActive}
             />
           </div>
         ) : (
@@ -75,6 +80,7 @@ DetailsCard.defaultProps = {
   lottieConfig: null,
   className: '',
   key: Date.now().toString(),
+  isActive: true,
 };
 
 DetailsCard.propTypes = {
@@ -85,4 +91,5 @@ DetailsCard.propTypes = {
   lottieConfig: PropTypes.object,
   className: PropTypes.string,
   key: PropTypes.string,
+  isActive: PropTypes.bool,
 };

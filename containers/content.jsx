@@ -101,12 +101,18 @@ export default function Content() {
             setSelectedProfession('');
           }}
           visible={selectedProfession === '' || selectedProfession === TOPIC_CERTIFICATIONS}
+          isActive = {false}
         />
-        <Button
-          onClick={() => setSelectedProfession(TOPIC_GAME)}
-          className="z-20"
-          text="Play it!"
-        />
+        <div className="text-text flex justify-center items-center flex-col">
+          <span className="text-lg">Still in production... But you can play it!</span>
+          <Button
+            onClick={() => setSelectedProfession(TOPIC_GAME)}
+            className="z-20"
+            text="Play"
+          />
+          <span className="text-text-secondary text-xs">Do it at your own risk </span>
+          <span className="text-text-secondary text-xs">It might be a bit buggy.. ;)</span>
+        </div>
       </div>
     </div>
   );
