@@ -105,7 +105,7 @@ export default function Content() {
           isActive = {false}
         />
         </div>
-      <div className="text-text flex justify-center items-center flex-col" style={{border: "1px solid rgba(255,255,255,0.3)", borderRadius: 6, padding: 16}}>
+      {/* <div className="text-text flex justify-center items-center flex-col" style={{border: "1px solid rgba(255,255,255,0.3)", borderRadius: 6, padding: 16}}>
           <span className="text-lg">Still in production... But you can test it out!</span>
           <Button
             onClick={() => setSelectedProfession(TOPIC_GAME)}
@@ -114,7 +114,7 @@ export default function Content() {
           />
           <span className="text-text-secondary text-xs">Do it at your own risk </span>
           <span className="text-text-secondary text-xs">It might be a bit buggy... ;)</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );
