@@ -11,11 +11,11 @@ export default function FullStack() {
         <span className="p-2 text-xl">Coming Soon...</span>
         <a
           className="text-xl"
-          href="https://github.com/Portfolio-Orel/orel.web"
+          href="https://github.com/orgs/Portfolio-Orel/repositories?q=&type=all&language=javascript&sort="
           target="_blank"
           rel="noreferrer"
         >
-          {`You can check out this website's repository for now :)`}
+          {`You can check out my JS repository for now :)`}
         </a>
         {/* <Project
 data={[]}

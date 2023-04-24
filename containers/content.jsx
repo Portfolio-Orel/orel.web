@@ -102,7 +102,6 @@ export default function Content() {
             setSelectedProfession('');
           }}
           visible={selectedProfession === '' || selectedProfession === TOPIC_CERTIFICATIONS}
-          isActive = {false}
         />
         </div>
       {/* <div className="text-text flex justify-center items-center flex-col" style={{border: "1px solid rgba(255,255,255,0.3)", borderRadius: 6, padding: 16}}>
