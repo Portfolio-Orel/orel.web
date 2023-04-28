@@ -8,7 +8,7 @@ const TYPE_TERTIARY = 'tertiary';
 
 const types = [TYPE_PRIMARY, TYPE_SECONDARY, TYPE_TERTIARY];
 
-export default function Button({ text, type, onClick, isLoading, isActive, className }) {
+export default function Button({ text, type, onClick, isLoading, isActive, className, endIcon }) {
   const buttonType = types.includes(type) ? type : TYPE_PRIMARY;
 
   function getButtonClassName() {
@@ -32,7 +32,7 @@ export default function Button({ text, type, onClick, isLoading, isActive, class
         <Loading />
       ) : (
         <div
-          className={`rounded-xl px-4 select-none`}
+          className={`flex flex-row justify-center items-center gap-2 rounded-xl select-none`}
           onClick={() => {
             if (isActive) {
               onClick();
@@ -41,6 +41,7 @@ export default function Button({ text, type, onClick, isLoading, isActive, class
           role="button"
         >
           {isActive ? text : 'Soon..'}
+          {endIcon}
         </div>
       )}
     </div>
@@ -54,6 +55,7 @@ Button.defaultProps = {
   isLoading: false,
   isActive: true,
   className: '',
+  endIcon: null,
 };
 
 Button.propTypes = {
@@ -63,4 +65,5 @@ Button.propTypes = {
   isLoading: PropTypes.bool,
   isActive: PropTypes.bool,
   className: PropTypes.string,
+  endIcon: PropTypes.node,
 };
