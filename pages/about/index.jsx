@@ -29,9 +29,9 @@ export default function About() {
         : ''}
         </div>
       <div className="flex flex-row">
-        {/* <Link className="text-text" href="files/cover-letter.pdf" target="_blank" rel="noreferrer">
+        <Link className="text-text" href="files/cover-letter.pdf" target="_blank" rel="noreferrer">
           <Button text="Cover Letter" type="secondary" />
-        </Link> */}
+        </Link>
         <Link href="files/resume.pdf" className="text-text" target="_blank" rel="noreferrer">
           <Button text="Resume" type="secondary" />
         </Link>
