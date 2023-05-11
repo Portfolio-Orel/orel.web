@@ -29,9 +29,9 @@ export default function About() {
           : ''}
       </div>
       <div className="flex flex-row gap-6">
-        <Link className="text-text" href="files/cover-letter.pdf" target="_blank" rel="noreferrer">
+        {/* <Link className="text-text" href="files/cover-letter.pdf" target="_blank" rel="noreferrer">
           <Button text="Cover Letter" type="secondary" />
-        </Link>
+        </Link> */}
         <Link href="files/cv.pdf" className="text-text" target="_blank" rel="noreferrer">
           <Button text="CV" type="secondary" />
         </Link>
