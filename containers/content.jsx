@@ -63,7 +63,7 @@ export default function Content() {
   }
 
   /* TEMPORARY - UNTIL I FIX sm:justify-center */
-  const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0);
+  const [width, setWidth] = useState(0);
 
   function handleWindowSizeChange() {
     setWidth(window.innerWidth);
