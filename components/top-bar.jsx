@@ -9,7 +9,15 @@ export default function TopBar({ className }) {
   return (
     <div className={`w-screen px-10 pt-3 flex justify-between ${className}`}>
       <Link href={'/'} className="text-text  text-xl">
-        <Image src="/icon.png" alt="Orel Zilberman icon" width={40} height={40} />
+        <div className="rounded-full overflow-hidden">
+          <Image
+            src="/profile_picture_top.png"
+            alt="Orel Zilberman icon"
+            className="object-cover"
+            height={50}
+            width={50}
+          />
+        </div>
       </Link>
       <div className="flex space-x-3">
         {items.map((item) => (
