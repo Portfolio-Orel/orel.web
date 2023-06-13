@@ -63,20 +63,21 @@ export default function Content() {
   }
 
   /* TEMPORARY - UNTIL I FIX sm:justify-center */
-  const [width, setWidth] = useState(window.innerWidth);
+  const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0);
 
   function handleWindowSizeChange() {
     setWidth(window.innerWidth);
   }
   useEffect(() => {
-    if (window) {
+    if (typeof window !== 'undefined') {
       window.addEventListener('resize', handleWindowSizeChange);
     }
     return () => {
-      window.removeEventListener('resize', handleWindowSizeChange);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleWindowSizeChange);
+      }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [window]);
+  }, []);
   /* TEMPORARY - UNTIL I FIX sm:justify-center */
 
   useEffect(() => {
