@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Image from 'next/image';
 
 const items = [{ title: 'About', page: 'about' }];
+
 export default function TopBar({ className }) {
   return (
     <div className={`w-screen px-10 pt-3 flex justify-between ${className}`}>

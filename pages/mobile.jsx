@@ -1,5 +1,6 @@
 import React from 'react';
 import ProfessionWrapper from '../containers/profession-wrapper';
+import { GITHUB_MOBILE } from '../common/consts';
 
 export default function FullStack() {
   // This component will display my full stack development projects with images and descriptions
@@ -11,7 +12,7 @@ export default function FullStack() {
         <span className="p-2 text-xl">Coming Soon...</span>
         <a
           className="text-lg"
-          href="https://github.com/orgs/Portfolio-Orel/repositories?q=&type=all&language=kotlin&sort="
+          href={ GITHUB_MOBILE }
           target="_blank"
           rel="noreferrer"
         >

@@ -1,0 +1,2 @@
+export const GITHUB_FULLSTACK = "https://github.com/orgs/Portfolio-Orel/repositories?q=&type=all&language=javascript&sort="
+export const GITHUB_MOBILE = "https://github.com/orgs/Portfolio-Orel/repositories?q=&type=all&language=kotlin&sort="
