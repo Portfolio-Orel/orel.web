@@ -61,6 +61,21 @@ export default function Content() {
   function setNewRoute() {
     Router.push(`/${selectedProfession}`);
   }
+  
+ /* TEMPORARY - UNTIL I FIX sm:justify-center */
+  const [width, setWidth] = useState(window.innerWidth);
+
+  function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+  }
+  useEffect(() => {
+    window.addEventListener('resize', handleWindowSizeChange);
+    return () => {
+      window.removeEventListener('resize', handleWindowSizeChange);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+/* TEMPORARY - UNTIL I FIX sm:justify-center */
 
   useEffect(() => {
     if (selectedProfession) {
@@ -89,66 +104,67 @@ export default function Content() {
   }, []);
 
   return (
-    <div className="h-full w-full md:justify-center md:items-center overflow-auto">
-      <div className="h-full w-full flex flex-col justify-center items-center">
-        <div className="flex flex-row justify-center">
-          <DetailsCard
-            title="Full Stack"
-            experience="5"
-            className={selectedProfession !== '' ? 'z-0' : 'z-20'}
-            lottieConfig={GetLottieConfig(Lottie.fullStack)}
-            onSelected={() => {
-              setSelectedProfession(TOPIC_FULL_STACK);
-            }}
-            onSelectedDismiss={() => {
-              setSelectedProfession('');
-            }}
-            buttonEndIcon={
-              <LottieComponent
-                isClickToPauseDisabled
-                options={GetLottieConfig(Lottie.newTab)}
-                height={20}
-                width={20}
-              />
-            } // TODO: Remove when the new screen is ready
-            visible={selectedProfession === '' || selectedProfession === TOPIC_FULL_STACK}
+    <div
+      className={`w-full h-full flex ${
+        width > 700 ? 'justify-center' : ''
+      } flex-row items-center overflow-auto`}
+    >
+      <DetailsCard
+        title="Full Stack"
+        experience="5"
+        className={selectedProfession !== '' ? 'z-0' : 'z-20'}
+        lottieConfig={GetLottieConfig(Lottie.fullStack)}
+        onSelected={() => {
+          setSelectedProfession(TOPIC_FULL_STACK);
+        }}
+        onSelectedDismiss={() => {
+          setSelectedProfession('');
+        }}
+        buttonEndIcon={
+          <LottieComponent
+            isClickToPauseDisabled
+            options={GetLottieConfig(Lottie.newTab)}
+            height={20}
+            width={20}
           />
-          <DetailsCard
-            title="Mobile"
-            experience="4"
-            className={selectedProfession !== '' ? 'z-0' : 'z-20'}
-            lottieConfig={GetLottieConfig(Lottie.mobile)}
-            onSelected={() => {
-              setSelectedProfession(TOPIC_MOBILE);
-            }}
-            onSelectedDismiss={() => {
-              setSelectedProfession('');
-            }}
-            buttonEndIcon={
-              <LottieComponent
-                isClickToPauseDisabled
-                options={GetLottieConfig(Lottie.newTab)}
-                height={20}
-                width={20}
-              />
-            } // TODO: Remove when the new screen is ready
-            visible={selectedProfession === '' || selectedProfession === TOPIC_MOBILE}
+        } // TODO: Remove when the new screen is ready
+        visible={selectedProfession === '' || selectedProfession === TOPIC_FULL_STACK}
+      />
+      <DetailsCard
+        title="Mobile"
+        experience="4"
+        className={selectedProfession !== '' ? 'z-0' : 'z-20'}
+        lottieConfig={GetLottieConfig(Lottie.mobile)}
+        onSelected={() => {
+          setSelectedProfession(TOPIC_MOBILE);
+        }}
+        onSelectedDismiss={() => {
+          setSelectedProfession('');
+        }}
+        buttonEndIcon={
+          <LottieComponent
+            isClickToPauseDisabled
+            options={GetLottieConfig(Lottie.newTab)}
+            height={20}
+            width={20}
           />
-          <DetailsCard
-            title="Certificates"
-            className={selectedProfession !== '' ? 'z-0' : 'z-20'}
-            lottieConfig={GetLottieConfig(Lottie.certificate)}
-            onSelected={() => {
-              setSelectedProfession(TOPIC_CERTIFICATIONS);
-            }}
-            onSelectedDismiss={() => {
-              setSelectedProfession('');
-            }}
-            visible={selectedProfession === '' || selectedProfession === TOPIC_CERTIFICATIONS}
-            useIsLoading
-          />
-        </div>
-        {/* <div className="text-text flex justify-center items-center flex-col" style={{border: "1px solid rgba(255,255,255,0.3)", borderRadius: 6, padding: 16}}>
+        } // TODO: Remove when the new screen is ready
+        visible={selectedProfession === '' || selectedProfession === TOPIC_MOBILE}
+      />
+      <DetailsCard
+        title="Certificates"
+        className={selectedProfession !== '' ? 'z-0' : 'z-20'}
+        lottieConfig={GetLottieConfig(Lottie.certificate)}
+        onSelected={() => {
+          setSelectedProfession(TOPIC_CERTIFICATIONS);
+        }}
+        onSelectedDismiss={() => {
+          setSelectedProfession('');
+        }}
+        visible={selectedProfession === '' || selectedProfession === TOPIC_CERTIFICATIONS}
+        useIsLoading
+      />
+      {/* <div className="text-text flex justify-center items-center flex-col" style={{border: "1px solid rgba(255,255,255,0.3)", borderRadius: 6, padding: 16}}>
           <span className="text-lg">Still in production... But you can test it out!</span>
           <Button
             onClick={() => setSelectedProfession(TOPIC_GAME)}
@@ -158,7 +174,6 @@ export default function Content() {
           <span className="text-text-secondary text-xs">Do it at your own risk </span>
           <span className="text-text-secondary text-xs">It might be a bit buggy... ;)</span>
         </div> */}
-      </div>
     </div>
   );
 }
