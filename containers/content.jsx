@@ -94,7 +94,7 @@ export default function Content() {
         <div className="flex flex-row justify-center items-center sm:overflow-x-auto">
           <DetailsCard
             title="Full Stack"
-            experience="4"
+            experience="5"
             className={selectedProfession !== '' ? 'z-0' : 'z-20'}
             lottieConfig={GetLottieConfig(Lottie.fullStack)}
             onSelected={() => {
