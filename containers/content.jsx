@@ -90,7 +90,7 @@ export default function Content() {
 
   return (
     <div className="h-screen w-screen flex justify-center">
-      <div className="h-full flex flex-row items-center overflow-auto">
+      <div className="h-full flex flex-row items-center overflow-auto overflow-y-hidden">
         <DetailsCard
           title="Full Stack"
           experience="5"
