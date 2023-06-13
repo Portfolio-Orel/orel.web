@@ -89,9 +89,9 @@ export default function Content() {
   }, []);
 
   return (
-    <div className="h-full w-full justify-center items-center sm:overflow-x-auto">
+    <div className="h-full w-full md:justify-center md:items-center overflow-auto">
       <div className="h-full w-full flex flex-col justify-center items-center">
-        <div className="flex flex-row justify-center items-center sm:overflow-x-auto">
+        <div className="flex flex-row justify-center">
           <DetailsCard
             title="Full Stack"
             experience="5"
