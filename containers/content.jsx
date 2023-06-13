@@ -61,21 +61,23 @@ export default function Content() {
   function setNewRoute() {
     Router.push(`/${selectedProfession}`);
   }
-  
- /* TEMPORARY - UNTIL I FIX sm:justify-center */
+
+  /* TEMPORARY - UNTIL I FIX sm:justify-center */
   const [width, setWidth] = useState(window.innerWidth);
 
   function handleWindowSizeChange() {
     setWidth(window.innerWidth);
   }
   useEffect(() => {
-    window.addEventListener('resize', handleWindowSizeChange);
+    if (window) {
+      window.addEventListener('resize', handleWindowSizeChange);
+    }
     return () => {
       window.removeEventListener('resize', handleWindowSizeChange);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-/* TEMPORARY - UNTIL I FIX sm:justify-center */
+  }, [window]);
+  /* TEMPORARY - UNTIL I FIX sm:justify-center */
 
   useEffect(() => {
     if (selectedProfession) {
