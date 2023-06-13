@@ -11,7 +11,7 @@ module.exports = {
         colors: {
             text: '#f2f2f2',
             'text-secondary': '#a6a6a6',
-            primary: '#9333ea',
+            primary: '#3A8DF8',
             secondary: '#D926A9',
             accent: '#1FB2A6',
             neutral: '#6b7280',
@@ -23,6 +23,9 @@ module.exports = {
             shadow: 'rgba(255, 255, 255, 0.2)',
         },
         extend: {
+            overflowXOnly: {
+                'overflow-x': 'auto',
+            },
             gridTemplateRows: {
                 'layout': '65px 1fr 20px'
             },

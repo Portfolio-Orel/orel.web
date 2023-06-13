@@ -14,7 +14,7 @@ export default function Button({ text, type, onClick, isLoading, isActive, class
   function getButtonClassName() {
     switch (buttonType) {
       case TYPE_PRIMARY:
-        return 'text-text bg-primary font-semibold rounded-lg';
+        return 'text-text bg-primary font-semibold rounded-lg px-4 py-2 rounded-lg shadow-md shadow-shadow';
       case TYPE_SECONDARY:
         return 'text-text bg-text-secondary font-semibold text-text px-4 py-2 rounded-lg shadow-md shadow-shadow';
       case TYPE_TERTIARY:

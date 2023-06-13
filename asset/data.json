@@ -2,7 +2,24 @@
   "about": {
     "paragraphs": [
       {
-        "lines": ["Coming soon..."]
+        "lines": [
+          "Hello! I'm Orel Zilberman, a passionate Software Engineer, specializing in mobile application development. I earned my B.Sc. in Software Engineering from Ort Braude in 2018, and since then, I've been immersing myself in an exciting journey of programming and technological exploration."
+        ]
+      },
+      {
+        "lines": [
+          "I have a diverse portfolio of experience working with a range of platforms, from Web development to native Android and iOS mobile development, and even dabbling in cross-platform projects with React Native. Continuous learning and development are central to my professional philosophy, which is reflected in my completion of several comprehensive Udemy courses, including Swift + SwiftUI (60 hrs), Machine Learning (43 hrs), and Cyber Security Part 1 (13 hrs)."
+        ]
+      },
+      {
+        "lines": [
+          "I consider myself an engaged and critical thinker, consistently active in conversations about the future of development, voicing my thoughts, and contributing innovative ideas. I thrive both in teamwork settings and when flying solo, demonstrating a tenacity for confronting challenges, an unending desire to learn, and an unwavering commitment to hard work. My dedication and constant quest for staying abreast of new developments and technologies help me excel in the dynamic tech industry."
+        ]
+      },
+      {
+        "lines": [
+          "You can find high-level summaries of my experiences and education in my resume. Moreover, my GitHub profile hosts a collection of my projects, offering a glimpse into the technologies I have worked with and the depth of my expertise."
+        ]
       }
     ]
   },

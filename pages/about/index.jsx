@@ -19,7 +19,7 @@ function Paragraph(paragraph) {
 export default function About() {
   return (
     <div className="h-full w-full flex flex-col justify-center items-center">
-      <div className="flex flex-col justify-center align-center mx-96">
+      <div className="flex flex-col align-center mx-10 my-5 sm:mx-96 overflow-auto">
         {data.about.paragraphs
           ? data.about.paragraphs.map((paragraph) => (
               <>
@@ -33,7 +33,7 @@ export default function About() {
           <Button text="Cover Letter" type="secondary" />
         </Link> */}
         <Link href="files/cv.pdf" className="text-text" target="_blank" rel="noreferrer">
-          <Button text="CV" type="secondary" />
+          <Button text="Resume" type="primary" />
         </Link>
       </div>
     </div>
