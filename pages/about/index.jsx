@@ -1,7 +1,18 @@
 import Link from 'next/link';
 import React from 'react';
+import LottieComponent from 'react-lottie';
 import data from '../../asset/data.json';
 import Button from '../../components/button';
+import newTabLottie from '../../public/lottie_new_tab.json';
+
+const newTabLottieProps = {
+  loop: false,
+  autoplay: true,
+  animationData: newTabLottie,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice',
+  },
+};
 
 function Paragraph(paragraph) {
   function buildPragraph() {
@@ -29,11 +40,19 @@ export default function About() {
           : ''}
       </div>
       <div className="flex flex-row gap-6">
-        {/* <Link className="text-text" href="files/cover-letter.pdf" target="_blank" rel="noreferrer">
-          <Button text="Cover Letter" type="secondary" />
-        </Link> */}
         <Link href="files/cv.pdf" className="text-text" target="_blank" rel="noreferrer">
-          <Button text="Resume" type="primary" />
+          <Button
+            text="My Resume"
+            type="primary"
+            endIcon={
+              <LottieComponent
+                isClickToPauseDisabled
+                options={newTabLottieProps}
+                height={20}
+                width={20}
+              />
+            }
+          />
         </Link>
       </div>
     </div>
