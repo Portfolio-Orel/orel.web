@@ -20,13 +20,26 @@ export default function Footer({ className }) {
         />
       </a>
       <a
-        href="https://www.linkedin.com/in/orel-zilberman-225a37137/"
+        href="https://www.youtube.com/channel/UC5Gyx3QHZ8hSEMeZeXlQ7ug"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <Image
+          src="/youtube.png"
+          alt="youtube"
+          className="mx-1 rounded-md"
+          width={iconSize + 6}
+          height={iconSize + 6}
+        />
+      </a>
+      <a
+        href="https://www.linkedin.com/in/orel-zilberman-225a37137"
         target="_blank"
         rel="noreferrer"
       >
         <Image
           src="/linkedin.jpeg"
-          alt="github"
+          alt="linkedin"
           className="mx-1"
           width={iconSize}
           height={iconSize}
