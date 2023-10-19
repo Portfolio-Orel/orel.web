@@ -14,7 +14,7 @@ export default function Footer({ className }) {
         <Image
           src="/github.jpeg"
           alt="github"
-          className="mx-1"
+          className="mx-1 cursor-pointer"
           width={iconSize}
           height={iconSize}
         />
@@ -27,7 +27,7 @@ export default function Footer({ className }) {
         <Image
           src="/youtube.png"
           alt="youtube"
-          className="mx-1 rounded-md"
+          className="mx-1 rounded-md cursor-pointer"
           width={iconSize + 6}
           height={iconSize + 6}
         />
@@ -40,7 +40,7 @@ export default function Footer({ className }) {
         <Image
           src="/linkedin.jpeg"
           alt="linkedin"
-          className="mx-1"
+          className="mx-1 cursor-pointer"
           width={iconSize}
           height={iconSize}
         />
