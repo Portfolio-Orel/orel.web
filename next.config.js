@@ -27,7 +27,22 @@ const nextConfig = {
     return config
   },
   reactStrictMode: true,
-  swcMinify: false
+  swcMinify: false,
+  // The bot floor is a separate Next app. These rewrites proxy /admin on this
+  // host to that app. vercel.json repeats them so the edge still proxies when
+  // this deployment serves the path as a static miss.
+  async rewrites() {
+    return [
+      {
+        source: "/admin",
+        destination: "https://orel-bots-dashboard.vercel.app/admin",
+      },
+      {
+        source: "/admin/:path*",
+        destination: "https://orel-bots-dashboard.vercel.app/admin/:path*",
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

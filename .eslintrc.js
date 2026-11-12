@@ -1,4 +1,5 @@
 module.exports = {
+  ignorePatterns: ["bots-dashboard/**", "node_modules/**", ".next/**"],
   env: {
     browser: true,
     es2021: true
