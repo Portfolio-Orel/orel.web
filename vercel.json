@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "https://orel-bots-dashboard.vercel.app/admin"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "https://orel-bots-dashboard.vercel.app/admin/:path*"
+    }
+  ]
+}
