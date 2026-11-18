@@ -19,6 +19,18 @@ const kindEdge: Record<NeedKind, string> = {
 
 const kindRank: Record<NeedKind, number> = { approval: 0, question: 1, fyi: 2 };
 
+const CheckIcon = () => (
+  <svg aria-hidden="true" viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none">
+    <path
+      d="M3.5 8.25 6.5 11.25 12.5 4.75"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 const statusLine = (action: ActionRecord): string => {
   if (action.status === "handled") return action.resultNote ? `Handled · ${action.resultNote}` : "Handled";
   if (action.status === "delivered") return "Delivered";
@@ -80,6 +92,7 @@ export const NeedsYou = ({
             const approveKey = actionKey({ botId: bot.botId, type: "approve", itemId: item.id });
             const rejectKey = actionKey({ botId: bot.botId, type: "reject", itemId: item.id });
             const messageKey = actionKey({ botId: bot.botId, type: "message", itemId: item.id });
+            const doneKey = actionKey({ botId: bot.botId, type: "done", itemId: item.id });
             const replyOpen = replyKey === key;
             return (
               <li
@@ -142,6 +155,16 @@ export const NeedsYou = ({
                     className="h-10 rounded-full border border-white/15 px-3.5 text-sm text-zinc-100 hover:bg-white/5"
                   >
                     Reply
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={`Mark ${item.title} done`}
+                    disabled={pendingKeys.includes(doneKey)}
+                    onClick={() => onAction({ botId: bot.botId, type: "done", itemId: item.id })}
+                    className="inline-flex h-10 items-center gap-1.5 rounded-full border border-white/15 px-3.5 text-sm text-zinc-100 hover:bg-white/5 disabled:opacity-60"
+                  >
+                    <CheckIcon />
+                    Done
                   </button>
                 </div>
                 {replyOpen ? (
