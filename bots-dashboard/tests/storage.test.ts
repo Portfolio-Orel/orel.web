@@ -1,9 +1,18 @@
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { FileDriver } from "@/lib/storage/file-driver";
-import { ACTION_LIMIT, boundActions, boundEvents, EVENT_LIMIT, JsonBotStore } from "@/lib/storage/store";
+import {
+  ACTION_LIMIT,
+  boundActions,
+  boundEvents,
+  EVENT_LIMIT,
+  EVENTS_PATH,
+  JsonBotStore,
+  PreconditionError,
+  type JsonDriver,
+} from "@/lib/storage/store";
 import type { ActionRecord, BotRecord, HistoryEvent } from "@/lib/types";
 
 const directories: string[] = [];
@@ -79,5 +88,54 @@ describe("storage", () => {
     expect(updated?.status).toBe("handled");
     expect(updated?.resultNote).toBe("Sent.");
     expect(await store.updateAction("missing", { status: "handled" })).toBeNull();
+  });
+
+  it("leaves an unreadable events log in place and still stores bots", async () => {
+    const root = await mkdtemp(path.join(tmpdir(), "botdash-"));
+    directories.push(root);
+    await mkdir(path.join(root, "events"), { recursive: true });
+    await mkdir(path.join(root, "bots"), { recursive: true });
+    const logPath = path.join(root, "events", "log.json");
+    const brokenBot = path.join(root, "bots", "jarvis.json");
+    await writeFile(logPath, "{not json", "utf8");
+    await writeFile(brokenBot, "{not json", "utf8");
+    await writeFile(path.join(root, "bots", "search.json"), JSON.stringify(bot("search")), "utf8");
+
+    const store = new JsonBotStore(new FileDriver(root));
+    await store.upsertBot(bot("ada"));
+    await store.appendEvents([event(1)]);
+
+    expect(await readFile(logPath, "utf8")).toBe("{not json");
+    expect(await readFile(brokenBot, "utf8")).toBe("{not json");
+    expect(await store.listEvents()).toEqual([]);
+    expect((await store.listBots()).map((item) => item.botId)).toEqual(["ada", "search"]);
+  });
+
+  it("saves the merged event log when every conditional write is rejected", async () => {
+    const docs = new Map<string, unknown>();
+    docs.set(EVENTS_PATH, [event(1)]);
+    const writes: { pathname: string; tag?: string }[] = [];
+    const driver: JsonDriver = {
+      read: async (pathname) => {
+        const value = docs.get(pathname);
+        return value === undefined ? null : { value, tag: "stale" };
+      },
+      write: async (pathname, value, tag) => {
+        writes.push({ pathname, tag });
+        if (tag) throw new PreconditionError();
+        docs.set(pathname, value);
+      },
+      list: async () => [...docs.keys()],
+    };
+
+    await new JsonBotStore(driver).appendEvents([event(2)]);
+
+    expect(writes.filter((write) => write.tag)).toHaveLength(6);
+    expect(writes.at(-1)).toEqual({ pathname: EVENTS_PATH, tag: undefined });
+    const saved = docs.get(EVENTS_PATH);
+    expect(Array.isArray(saved) ? saved.map((item) => (item as HistoryEvent).id) : []).toEqual([
+      "evt-1",
+      "evt-2",
+    ]);
   });
 });

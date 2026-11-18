@@ -1,6 +1,6 @@
 import { mkdir, readdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { assertSafePath, type JsonDriver, type StoredDocument } from "@/lib/storage/store";
+import { assertSafePath, UnreadableDocumentError, type JsonDriver, type StoredDocument } from "@/lib/storage/store";
 
 const isEnoent = (error: unknown): boolean =>
   Boolean(error && typeof error === "object" && "code" in error && error.code === "ENOENT");
@@ -20,7 +20,12 @@ export class FileDriver implements JsonDriver {
   async read(pathname: string): Promise<StoredDocument | null> {
     try {
       const text = await readFile(fullPath(this.root, pathname), "utf8");
-      return { value: JSON.parse(text) as unknown };
+      try {
+        return { value: JSON.parse(text) as unknown };
+      } catch (error) {
+        if (error instanceof SyntaxError) throw new UnreadableDocumentError();
+        throw error;
+      }
     } catch (error) {
       if (isEnoent(error)) return null;
       throw error;

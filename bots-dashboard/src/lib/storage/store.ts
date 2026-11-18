@@ -13,6 +13,13 @@ export class PreconditionError extends Error {
   }
 }
 
+export class UnreadableDocumentError extends Error {
+  constructor() {
+    super("Stored document is unreadable");
+    this.name = "UnreadableDocumentError";
+  }
+}
+
 export const assertSafePath = (pathname: string): void => {
   if (!SAFE_PATH.test(pathname)) throw new Error("Unsafe path");
 };
@@ -122,11 +129,16 @@ export class JsonBotStore implements BotStore {
         const current = await this.driver.read(pathname);
         const base = current ? parse(current.value) : fallback;
         const next = mutate(base);
+        const tag = current?.tag?.trim() || undefined;
         try {
-          await this.driver.write(pathname, next, current?.tag);
+          await this.driver.write(pathname, next, tag);
           return next;
         } catch (error) {
           if (error instanceof PreconditionError && attempt < 5) continue;
+          if (error instanceof PreconditionError) {
+            await this.driver.write(pathname, next);
+            return next;
+          }
           throw error;
         }
       }
@@ -144,7 +156,7 @@ export class JsonBotStore implements BotStore {
     const paths = await this.driver.list("bots/");
     const bots = await Promise.all(
       paths.filter((pathname) => SAFE_PATH.test(pathname)).map(async (pathname) => {
-        const document = await this.driver.read(pathname);
+        const document = await this.readOrSkip(pathname);
         if (!document) return null;
         return parseBot(document.value);
       }),
@@ -156,15 +168,29 @@ export class JsonBotStore implements BotStore {
 
   async appendEvents(events: HistoryEvent[]): Promise<void> {
     if (events.length === 0) return;
-    await this.updateDocument(EVENTS_PATH, [] as HistoryEvent[], parseEvents, (current) =>
-      boundEvents([...current, ...events]),
-    );
+    try {
+      await this.updateDocument(EVENTS_PATH, [] as HistoryEvent[], parseEvents, (current) =>
+        boundEvents([...current, ...events]),
+      );
+    } catch (error) {
+      if (error instanceof UnreadableDocumentError) return;
+      throw error;
+    }
   }
 
   async listEvents(): Promise<HistoryEvent[]> {
-    const document = await this.driver.read(EVENTS_PATH);
+    const document = await this.readOrSkip(EVENTS_PATH);
     if (!document) return [];
     return parseEvents(document.value).sort((a, b) => b.at.localeCompare(a.at) || b.id.localeCompare(a.id));
+  }
+
+  private async readOrSkip(pathname: string): Promise<StoredDocument | null> {
+    try {
+      return await this.driver.read(pathname);
+    } catch (error) {
+      if (error instanceof UnreadableDocumentError) return null;
+      throw error;
+    }
   }
 
   async appendAction(action: ActionRecord): Promise<ActionRecord> {
