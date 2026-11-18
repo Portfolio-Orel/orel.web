@@ -23,6 +23,7 @@ export const ACTION_LABEL: Record<ActionType, string> = {
   reject: "Reject",
   message: "Note",
   refresh: "Refresh",
+  done: "Done",
 };
 
 const STALE_MS = 2 * 60 * 60 * 1000;
@@ -77,6 +78,7 @@ export const actionKey = (input: { botId: string; type: string; itemId?: string 
 export const actionPhrase = (action: ActionRecord): string => {
   if (action.type === "refresh") return action.botId === "all" ? "Refresh the floor" : `Refresh ${action.botId}`;
   if (action.type === "message") return action.text ?? "Sent a note";
+  if (action.type === "done") return "Done by Orel";
   if (action.type === "approve") return `Approved ${action.itemId ?? "an item"}`;
   return `Rejected ${action.itemId ?? "an item"}`;
 };

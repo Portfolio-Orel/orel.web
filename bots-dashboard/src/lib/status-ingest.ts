@@ -1,11 +1,33 @@
+import { partitionNeeds } from "@/lib/done-items";
 import { createId } from "@/lib/ids";
 import { toBotRecord, type StatusInput } from "@/lib/schemas";
-import { getStore } from "@/lib/storage";
+import { getStore, type BotStore } from "@/lib/storage";
 
-export const saveStatuses = async (inputs: StatusInput[]): Promise<number> => {
-  const store = getStore();
-  const now = new Date().toISOString();
-  const bots = inputs.map((input) => toBotRecord(input, now));
+export const ingestStatuses = async (
+  store: BotStore,
+  inputs: StatusInput[],
+  now = new Date().toISOString(),
+): Promise<number> => {
+  const done = await store.listDone();
+  const reopenKeys: { botId: string; itemId: string }[] = [];
+  const bots = inputs.map((input) => {
+    const partitioned = partitionNeeds(input.botId, input.needsOrel ?? [], done);
+    for (const itemId of partitioned.reopenIds) reopenKeys.push({ botId: input.botId, itemId });
+    return toBotRecord(
+      {
+        ...input,
+        needsOrel: partitioned.items.map((item) => ({
+          id: item.id,
+          title: item.title,
+          detail: item.detail,
+          link: item.link,
+          kind: item.kind,
+        })),
+      },
+      now,
+    );
+  });
+  await store.forgetDone(reopenKeys);
   for (const bot of bots) {
     await store.upsertBot(bot);
   }
@@ -21,3 +43,5 @@ export const saveStatuses = async (inputs: StatusInput[]): Promise<number> => {
   );
   return bots.length;
 };
+
+export const saveStatuses = async (inputs: StatusInput[]): Promise<number> => ingestStatuses(getStore(), inputs);

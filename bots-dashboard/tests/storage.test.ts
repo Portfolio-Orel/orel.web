@@ -90,6 +90,41 @@ describe("storage", () => {
     expect(await store.updateAction("missing", { status: "handled" })).toBeNull();
   });
 
+  it("stores a done row, hides that item, and restores it on reopen", async () => {
+    const root = await mkdtemp(path.join(tmpdir(), "botdash-"));
+    directories.push(root);
+    const store = new JsonBotStore(new FileDriver(root));
+    await store.upsertBot({
+      ...bot("jarvis"),
+      needsOrel: [
+        { id: "memo", title: "Send it?", detail: "Ready.", link: "https://example.com/memo", kind: "approval" },
+        { id: "note", title: "Read this", kind: "fyi" },
+      ],
+    });
+    await store.markDone({
+      id: "memo",
+      botId: "jarvis",
+      title: "Send it?",
+      detail: "Ready.",
+      link: "https://example.com/memo",
+      kind: "approval",
+      status: "done",
+      done_at: "2026-11-18T06:00:00.000Z",
+      done_by: "orel",
+    });
+
+    expect((await store.listBots())[0]?.needsOrel.map((item) => item.id)).toEqual(["note"]);
+    expect(await store.listDone()).toMatchObject([
+      { id: "memo", botId: "jarvis", status: "done", done_by: "orel", done_at: "2026-11-18T06:00:00.000Z" },
+    ]);
+
+    const restored = await store.reopenDone("jarvis", "memo");
+    expect(restored?.title).toBe("Send it?");
+    expect((await store.listBots())[0]?.needsOrel.map((item) => item.id)).toEqual(["memo", "note"]);
+    expect(await store.listDone()).toEqual([]);
+    expect(await store.reopenDone("jarvis", "memo")).toBeNull();
+  });
+
   it("leaves an unreadable events log in place and still stores bots", async () => {
     const root = await mkdtemp(path.join(tmpdir(), "botdash-"));
     directories.push(root);

@@ -6,7 +6,7 @@ export const NEED_KINDS = ["approval", "question", "fyi"] as const;
 
 export type NeedKind = (typeof NEED_KINDS)[number];
 
-export const ACTION_TYPES = ["approve", "reject", "message", "refresh"] as const;
+export const ACTION_TYPES = ["approve", "reject", "message", "refresh", "done"] as const;
 
 export type ActionType = (typeof ACTION_TYPES)[number];
 
@@ -20,6 +20,18 @@ export type NeedsOrelItem = {
   detail?: string;
   link?: string;
   kind: NeedKind;
+};
+
+export type DoneRecord = {
+  id: string;
+  botId: string;
+  title: string;
+  detail?: string;
+  link?: string;
+  kind: NeedKind;
+  status: "done";
+  done_at: string;
+  done_by: "orel";
 };
 
 export type BotLink = {

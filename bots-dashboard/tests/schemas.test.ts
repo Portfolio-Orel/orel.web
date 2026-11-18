@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { actionSchema, batchSchema, statusSchema } from "@/lib/schemas";
+import { actionSchema, batchSchema, statusSchema, toBotRecord } from "@/lib/schemas";
 
 const validStatus = {
   botId: "jarvis",
@@ -24,9 +24,15 @@ const validStatus = {
 
 describe("ingest validation", () => {
   it("accepts a status payload", () => {
-    const parsed = statusSchema.safeParse(validStatus);
+    const parsed = statusSchema.safeParse({
+      ...validStatus,
+      needsOrel: [{ ...validStatus.needsOrel[0], reopen: true }],
+    });
     expect(parsed.success).toBe(true);
-    if (parsed.success) expect(parsed.data.needsOrel?.[0]?.kind).toBe("approval");
+    if (!parsed.success) return;
+    expect(parsed.data.needsOrel?.[0]?.kind).toBe("approval");
+    expect(parsed.data.needsOrel?.[0]?.reopen).toBe(true);
+    expect(toBotRecord(parsed.data).needsOrel[0]).not.toHaveProperty("reopen");
   });
 
   it("rejects an unknown status, a bad id, and a non-http link", () => {
@@ -66,6 +72,9 @@ describe("ingest validation", () => {
     expect(actionSchema.safeParse({ botId: "jarvis", type: "message" }).success).toBe(false);
     expect(actionSchema.safeParse({ botId: "jarvis", type: "approve" }).success).toBe(false);
     expect(actionSchema.safeParse({ botId: "jarvis", type: "approve", itemId: "memo" }).success).toBe(true);
+    expect(actionSchema.safeParse({ botId: "jarvis", type: "done" }).success).toBe(false);
+    expect(actionSchema.safeParse({ botId: "all", type: "done", itemId: "memo" }).success).toBe(false);
+    expect(actionSchema.safeParse({ botId: "jarvis", type: "done", itemId: "memo" }).success).toBe(true);
     expect(actionSchema.safeParse({ botId: "../jarvis", type: "refresh" }).success).toBe(false);
   });
 });
