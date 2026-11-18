@@ -1,6 +1,6 @@
 # Bot status
 
-Private floor for Orel's assistants. It shows what each bot is doing, what needs a decision, and lets you approve, reject, reply, or ask every bot to refresh. Bots push status in, and actions go back out through a webhook plus a pending-actions feed.
+Private floor for Orel's assistants. It shows what each bot is doing, what needs a decision, and lets you approve, reject, reply, mark done, or ask every bot to refresh. Bots push status in, and actions go back out through a webhook plus a pending-actions feed.
 
 The app is meant to be deployed as its own Vercel project and reached at `https://www.orelzilberman.com/admin/bots`. `basePath` is `/admin`, so pages, assets, and APIs all live under that prefix. The portfolio proxies `/admin` to this project's production URL in two places that share the same destination: root `vercel.json` (edge) and `next.config.js` `rewrites` (the Next server). The portfolio is not a static export, so the Next server would otherwise answer `/admin` with its own 404.
 
@@ -54,6 +54,7 @@ One module, `src/lib/storage`, hides the driver behind a `BotStore`:
 - `bots/<botId>.json` — one document per bot
 - `events/log.json` — append-only history, last 200 events
 - `actions/log.json` — actions, last 200, never dropping ones that are still pending or delivered
+- `done/items.json` — items Orel marked done. Each row stores `status: "done"`, `done_at`, and `done_by: "orel"`. These rows are not trimmed.
 
 Reads and writes stay on the server. Blob objects are private (`access: 'private'`), read with `useCache: false` so a status push shows up on the next poll, and blob URLs are never sent to the browser.
 
@@ -109,7 +110,7 @@ curl -sS -X POST https://www.orelzilberman.com/admin/api/status \
 
 `status` is one of `working`, `idle`, `waiting_on_orel`, `blocked`, `error`.
 
-`needsOrel[].kind` is one of `approval`, `question`, `fyi`.
+`needsOrel[].kind` is one of `approval`, `question`, `fyi`. An item may also include `"reopen": true` (see sticky done below).
 
 `botId` and item ids are `[A-Za-z0-9][A-Za-z0-9_-]{0,63}`. Links must be `http` or `https`. `updatedAt` is optional; the server uses its own clock when it is omitted. Unknown fields are ignored. A bad body returns 400 with `{ error, issues: [{ path, message }] }`. Success is `{ ok: true }`. The call also appends a history event.
 
@@ -151,7 +152,7 @@ curl -sS https://www.orelzilberman.com/admin/api/pending-actions \
 }
 ```
 
-`type` is `approve`, `reject`, `message`, or `refresh`. `botId` may be `all` for a floor-wide refresh.
+`type` is `approve`, `reject`, `message`, `refresh`, or `done`. `botId` may be `all` for a floor-wide refresh. `done` is never `all`.
 
 ### Acknowledge an action
 
@@ -203,6 +204,7 @@ Other shapes:
 - Note to a bot: `{"botId":"jarvis","type":"message","text":"Skip Reddit today."}`
 - Refresh one bot: `{"botId":"jarvis","type":"refresh"}`
 - Refresh now (the header button): `{"botId":"all","type":"refresh"}`
+- Done: `{"botId":"jarvis","type":"done","itemId":"memo"}`
 
 The action is stored as `pending`. If `BOTDASH_WEBHOOK_URL` is set, the server immediately POSTs this JSON and, on a 2xx, marks it `delivered`:
 
@@ -217,7 +219,33 @@ The action is stored as `pending`. If `BOTDASH_WEBHOOK_URL` is set, the server i
 }
 ```
 
+For `type: "done"` the same webhook adds the item title and link, and repeats the action name:
+
+```json
+{
+  "id": "act-example",
+  "botId": "jarvis",
+  "type": "done",
+  "action": "done",
+  "itemId": "memo",
+  "title": "Send the Tuesday memo?",
+  "link": "https://example.com/memo",
+  "text": null,
+  "createdAt": "2026-11-12T08:05:00.000Z"
+}
+```
+
+`title` is the item title. `link` is the item link, or `null` when the item has none. Approve, reject, message, and refresh keep the payload above, without `action`, `title`, or `link`.
+
 The webhook request uses `Authorization: <BOTDASH_WEBHOOK_AUTH>` when that env is set. A failed webhook leaves the action `pending` and records a short delivery error (status code only, never the auth header). The bot can still pick it up from pending-actions. After ack, status becomes `handled` and `resultNote` is the optional result.
+
+### Sticky done
+
+`POST /admin/api/status` and `POST /admin/api/status/batch` use the same rule. A `needsOrel` item is not written, and is removed if it is already stored, when a done row exists with the same `botId` and the same item `id` and `status: "done"`. Pushing that item again does not reopen it. The hourly re-push cannot bring it back.
+
+The only ingest exception is `"reopen": true` on that item. That deletes the done row and keeps the item. The same item id on a different bot is a different row and stays open.
+
+Marking done from the dashboard writes that row (`done_by` is always `"orel"`, `done_at` is the server time) and removes the item from the bot immediately. Recent activity shows the action as "Done by Orel". Undo (`POST /admin/api/done/undo` with `{ "botId", "itemId" }`, signed in) deletes the row and puts the item back. Undo does not send a webhook.
 
 Sign-in is `POST /admin/api/auth/login` with `{ "username", "password" }`. Sign-out is `POST /admin/api/auth/logout`.
 

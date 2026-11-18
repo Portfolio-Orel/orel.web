@@ -9,8 +9,9 @@ import { LiveIndicator } from "@/components/dashboard/live-indicator";
 import { NeedsYou } from "@/components/dashboard/needs-you";
 import { DashboardSkeleton } from "@/components/dashboard/skeletons";
 import { SummaryStrip } from "@/components/dashboard/summary-strip";
+import { doneItemKey, visibleNeeds } from "@/lib/done-items";
 import { actionKey, apiPath, isStale, safeClientError } from "@/lib/format";
-import type { ActionRecord, ActionType, BotStatus, FloorSnapshot } from "@/lib/types";
+import type { ActionRecord, ActionType, BotStatus, FloorSnapshot, NeedsOrelItem } from "@/lib/types";
 
 const POLL_MS = 12000;
 
@@ -31,6 +32,16 @@ type ActionRequest = {
   text?: string;
 };
 
+type ToastState = {
+  message: string;
+  onUndo?: () => void;
+};
+
+type ActionResponse = {
+  action?: ActionRecord;
+  alreadyDone?: boolean;
+};
+
 const toastFor = (action: ActionRecord): string => {
   if (action.status === "delivered") return "Sent. The bot has it.";
   if (action.deliveryError) return "Saved. Delivery failed, so it stays pending.";
@@ -46,7 +57,9 @@ export const Dashboard = () => {
   const [fetchedAt, setFetchedAt] = useState<number | null>(null);
   const [openBotId, setOpenBotId] = useState<string | null>(null);
   const [pendingKeys, setPendingKeys] = useState<string[]>([]);
-  const [toast, setToast] = useState("");
+  const [dismissed, setDismissed] = useState<string[]>([]);
+  const [restored, setRestored] = useState<Record<string, NeedsOrelItem>>({});
+  const [toast, setToast] = useState<ToastState | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -102,7 +115,7 @@ export const Dashboard = () => {
 
   useEffect(() => {
     if (!toast) return;
-    const timer = window.setTimeout(() => setToast(""), 4200);
+    const timer = window.setTimeout(() => setToast(null), toast.onUndo ? 5000 : 4200);
     return () => window.clearTimeout(timer);
   }, [toast]);
 
@@ -116,12 +129,83 @@ export const Dashboard = () => {
       return a.name.localeCompare(b.name);
     });
   }, [bots]);
-  const needsCount = floor?.bots.reduce((sum, bot) => sum + bot.needsOrel.length, 0) ?? 0;
+  const openBots = useMemo(() => visibleNeeds(bots, dismissed, restored), [bots, dismissed, restored]);
+  const needsCount = openBots.reduce((sum, bot) => sum + bot.needsOrel.length, 0);
   const openBot = bots.find((bot) => bot.botId === openBotId) ?? null;
   const refreshKey = actionKey({ botId: "all", type: "refresh" });
 
+  const undoDone = async (botId: string, item: NeedsOrelItem) => {
+    const itemKey = doneItemKey(botId, item.id);
+    try {
+      const response = await fetch(apiPath("/api/done/undo"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ botId, itemId: item.id }),
+      });
+      if (response.status === 401) {
+        router.push("/login");
+        return;
+      }
+      if (!response.ok) {
+        setRestored((current) => {
+          const next = { ...current };
+          delete next[itemKey];
+          return next;
+        });
+        setDismissed((current) => (current.includes(itemKey) ? current : [...current, itemKey]));
+        setToast({ message: "Could not undo." });
+        return;
+      }
+      setFloor((current) => {
+        if (!current) return current;
+        return {
+          ...current,
+          bots: current.bots.map((bot) => {
+            if (bot.botId !== botId || bot.needsOrel.some((entry) => entry.id === item.id)) return bot;
+            return { ...bot, needsOrel: [item, ...bot.needsOrel] };
+          }),
+        };
+      });
+    } catch {
+      setDismissed((current) => (current.includes(itemKey) ? current : [...current, itemKey]));
+      setToast({ message: "Could not undo." });
+    }
+  };
+
   const handleAction = async (input: ActionRequest) => {
     const key = actionKey(input);
+    const doneKey = input.type === "done" && input.itemId ? doneItemKey(input.botId, input.itemId) : null;
+    const doneItem = doneKey
+      ? bots.find((bot) => bot.botId === input.botId)?.needsOrel.find((item) => item.id === input.itemId)
+      : undefined;
+    const undoState = { fired: false, settled: false };
+
+    if (doneKey) {
+      setDismissed((current) => (current.includes(doneKey) ? current : [...current, doneKey]));
+      setRestored((current) => {
+        if (!current[doneKey]) return current;
+        const next = { ...current };
+        delete next[doneKey];
+        return next;
+      });
+    }
+
+    if (doneKey && doneItem) {
+      const item = doneItem;
+      const itemKey = doneKey;
+      setToast({
+        message: "Marked done.",
+        onUndo: () => {
+          if (undoState.fired) return;
+          undoState.fired = true;
+          setDismissed((current) => current.filter((entry) => entry !== itemKey));
+          setRestored((current) => ({ ...current, [itemKey]: item }));
+          setToast(null);
+          if (undoState.settled) void undoDone(input.botId, item);
+        },
+      });
+    }
+
     setPendingKeys((current) => (current.includes(key) ? current : [...current, key]));
     try {
       const response = await fetch(apiPath("/api/action"), {
@@ -134,20 +218,54 @@ export const Dashboard = () => {
         return;
       }
       const body: unknown = await response.json().catch(() => null);
-      const action =
-        body && typeof body === "object" && "action" in body ? (body as { action: ActionRecord }).action : null;
-      if (!response.ok || !action) {
-        setToast(safeClientError(body) ?? "Could not send that.");
+      const payload = body && typeof body === "object" ? (body as ActionResponse) : null;
+      undoState.settled = true;
+
+      if (doneKey && payload?.alreadyDone) {
+        if (undoState.fired && doneItem) await undoDone(input.botId, doneItem);
         return;
       }
-      setFloor((current) =>
-        current
-          ? { ...current, actions: [action, ...current.actions.filter((item) => item.id !== action.id)] }
-          : current,
-      );
-      setToast(toastFor(action));
+
+      const action = payload?.action ?? null;
+      if (!response.ok || !action) {
+        if (doneKey && !undoState.fired) {
+          setDismissed((current) => current.filter((entry) => entry !== doneKey));
+          setToast({ message: safeClientError(body) ?? "Could not mark that done." });
+        } else if (!doneKey) {
+          setToast({ message: safeClientError(body) ?? "Could not send that." });
+        }
+        return;
+      }
+
+      if (doneKey && undoState.fired && doneItem) {
+        await undoDone(input.botId, doneItem);
+        return;
+      }
+
+      setFloor((current) => {
+        if (!current) return current;
+        const nextBots =
+          doneKey && input.itemId
+            ? current.bots.map((bot) =>
+                bot.botId === input.botId
+                  ? { ...bot, needsOrel: bot.needsOrel.filter((item) => item.id !== input.itemId) }
+                  : bot,
+              )
+            : current.bots;
+        return {
+          ...current,
+          bots: nextBots,
+          actions: [action, ...current.actions.filter((item) => item.id !== action.id)],
+        };
+      });
+      if (!doneKey) setToast({ message: toastFor(action) });
     } catch {
-      setToast("Could not reach the floor.");
+      if (doneKey && !undoState.fired) {
+        setDismissed((current) => current.filter((entry) => entry !== doneKey));
+        setToast({ message: "Could not reach the floor." });
+      } else if (!doneKey) {
+        setToast({ message: "Could not reach the floor." });
+      }
     } finally {
       setPendingKeys((current) => current.filter((item) => item !== key));
     }
@@ -230,7 +348,7 @@ export const Dashboard = () => {
 
         <SummaryStrip bots={bots} needsCount={needsCount} />
         <NeedsYou
-          bots={bots}
+          bots={openBots}
           actions={floor.actions}
           pendingKeys={pendingKeys}
           onAction={(input) => {
@@ -278,9 +396,18 @@ export const Dashboard = () => {
       {toast ? (
         <div
           role="status"
-          className="fixed bottom-4 left-1/2 z-50 w-[min(24rem,calc(100%-2rem))] -translate-x-1/2 rounded-full border border-white/10 bg-zinc-900/95 px-4 py-2 text-center text-sm text-zinc-100 shadow-2xl"
+          className="fixed bottom-4 left-1/2 z-50 flex w-[min(24rem,calc(100%-2rem))] -translate-x-1/2 items-center justify-center gap-3 rounded-full border border-white/10 bg-zinc-900/95 px-4 py-2 text-center text-sm text-zinc-100 shadow-2xl"
         >
-          {toast}
+          <span>{toast.message}</span>
+          {toast.onUndo ? (
+            <button
+              type="button"
+              onClick={toast.onUndo}
+              className="font-medium text-white underline-offset-4 hover:underline"
+            >
+              Undo
+            </button>
+          ) : null}
         </div>
       ) : null}
     </main>

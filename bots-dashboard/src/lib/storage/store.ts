@@ -1,10 +1,11 @@
-import { storedActionSchema, storedBotSchema, storedEventSchema } from "@/lib/schemas";
-import type { ActionPatch, ActionRecord, BotRecord, HistoryEvent } from "@/lib/types";
+import { itemFromDone } from "@/lib/done-items";
+import { storedActionSchema, storedBotSchema, storedDoneSchema, storedEventSchema } from "@/lib/schemas";
+import type { ActionPatch, ActionRecord, BotRecord, DoneRecord, HistoryEvent, NeedsOrelItem } from "@/lib/types";
 
 export const EVENT_LIMIT = 200;
 export const ACTION_LIMIT = 200;
 
-const SAFE_PATH = /^(bots|events|actions)\/[A-Za-z0-9][A-Za-z0-9_.-]{0,120}\.json$/;
+const SAFE_PATH = /^(bots|events|actions|done)\/[A-Za-z0-9][A-Za-z0-9_.-]{0,120}\.json$/;
 
 export class PreconditionError extends Error {
   constructor() {
@@ -20,6 +21,8 @@ export const assertSafePath = (pathname: string): void => {
 export const botPath = (botId: string): string => `bots/${botId}.json`;
 export const EVENTS_PATH = "events/log.json";
 export const ACTIONS_PATH = "actions/log.json";
+export const DONE_PATH = "done/items.json";
+const NEEDS_LIMIT = 20;
 
 export type StoredDocument = {
   value: unknown;
@@ -40,6 +43,10 @@ export interface BotStore {
   appendAction(action: ActionRecord): Promise<ActionRecord>;
   listActions(): Promise<ActionRecord[]>;
   updateAction(id: string, patch: ActionPatch): Promise<ActionRecord | null>;
+  listDone(): Promise<DoneRecord[]>;
+  markDone(record: DoneRecord): Promise<void>;
+  forgetDone(keys: { botId: string; itemId: string }[]): Promise<void>;
+  reopenDone(botId: string, itemId: string): Promise<DoneRecord | null>;
 }
 
 const tails = new Map<string, Promise<void>>();
@@ -107,6 +114,16 @@ const parseActions = (value: unknown): ActionRecord[] => {
     return parsed.success ? [parsed.data] : [];
   });
 };
+
+const parseDone = (value: unknown): DoneRecord[] => {
+  if (!Array.isArray(value)) return [];
+  return value.flatMap((item) => {
+    const parsed = storedDoneSchema.safeParse(item);
+    return parsed.success ? [parsed.data] : [];
+  });
+};
+
+const restoreItem = (row: DoneRecord): NeedsOrelItem => itemFromDone(row);
 
 export class JsonBotStore implements BotStore {
   constructor(private readonly driver: JsonDriver) {}
@@ -195,5 +212,63 @@ export class JsonBotStore implements BotStore {
       return boundActions(next, id);
     });
     return found.action;
+  }
+
+  async listDone(): Promise<DoneRecord[]> {
+    const document = await this.driver.read(DONE_PATH);
+    if (!document) return [];
+    return parseDone(document.value).sort((a, b) => b.done_at.localeCompare(a.done_at) || a.id.localeCompare(b.id));
+  }
+
+  async markDone(record: DoneRecord): Promise<void> {
+    await this.updateDocument(DONE_PATH, [] as DoneRecord[], parseDone, (current) => {
+      const next = current.filter((row) => !(row.botId === record.botId && row.id === record.id));
+      next.push(record);
+      return next;
+    });
+    const pathname = botPath(record.botId);
+    assertSafePath(pathname);
+    const document = await this.driver.read(pathname);
+    if (!document) return;
+    const bot = parseBot(document.value);
+    if (!bot || !bot.needsOrel.some((item) => item.id === record.id)) return;
+    await this.driver.write(pathname, {
+      ...bot,
+      needsOrel: bot.needsOrel.filter((item) => item.id !== record.id),
+    });
+  }
+
+  async forgetDone(keys: { botId: string; itemId: string }[]): Promise<void> {
+    if (keys.length === 0) return;
+    const match = new Set(keys.map((key) => `${key.botId}:${key.itemId}`));
+    await this.updateDocument(DONE_PATH, [] as DoneRecord[], parseDone, (current) =>
+      current.filter((row) => !match.has(`${row.botId}:${row.id}`)),
+    );
+  }
+
+  async reopenDone(botId: string, itemId: string): Promise<DoneRecord | null> {
+    const found: { row: DoneRecord | null } = { row: null };
+    await this.updateDocument(DONE_PATH, [] as DoneRecord[], parseDone, (current) => {
+      const row = current.find((item) => item.botId === botId && item.id === itemId && item.status === "done");
+      found.row = row ?? null;
+      if (!row) return current;
+      return current.filter((item) => !(item.botId === botId && item.id === itemId));
+    });
+    const record = found.row;
+    if (!record) return null;
+
+    const pathname = botPath(botId);
+    assertSafePath(pathname);
+    const document = await this.driver.read(pathname);
+    if (!document) return record;
+    const bot = parseBot(document.value);
+    if (!bot || bot.needsOrel.some((item) => item.id === itemId) || bot.needsOrel.length >= NEEDS_LIMIT) {
+      return record;
+    }
+    await this.driver.write(pathname, {
+      ...bot,
+      needsOrel: [restoreItem(record), ...bot.needsOrel],
+    });
+    return record;
   }
 }

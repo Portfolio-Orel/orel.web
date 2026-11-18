@@ -38,6 +38,10 @@ export const needsItemSchema = z.object({
   kind: z.enum(["approval", "question", "fyi"]),
 });
 
+export const incomingNeedSchema = needsItemSchema.extend({
+  reopen: z.boolean().optional(),
+});
+
 export const linkSchema = z.object({
   label: z.string().trim().min(1).max(80),
   url: httpUrl,
@@ -52,7 +56,7 @@ export const statusSchema = z
     summary: z.string().trim().min(1).max(280),
     lastDone: optionalText(500),
     nextUp: optionalText(500),
-    needsOrel: z.array(needsItemSchema).max(20).optional(),
+    needsOrel: z.array(incomingNeedSchema).max(20).optional(),
     links: z.array(linkSchema).max(10).optional(),
     updatedAt: timestamp.optional(),
   })
@@ -75,7 +79,7 @@ export const loginSchema = z.object({
 export const actionSchema = z
   .object({
     botId: z.string().regex(/^(all|[a-zA-Z0-9][a-zA-Z0-9_-]{0,63})$/, "Invalid bot id"),
-    type: z.enum(["approve", "reject", "message", "refresh"]),
+    type: z.enum(["approve", "reject", "message", "refresh", "done"]),
     itemId: botIdSchema.optional(),
     text: optionalText(2000),
   })
@@ -83,10 +87,18 @@ export const actionSchema = z
     if (value.type === "message" && !value.text) {
       ctx.addIssue({ code: "custom", message: "Message text is required", path: ["text"] });
     }
-    if ((value.type === "approve" || value.type === "reject") && !value.itemId) {
+    if ((value.type === "approve" || value.type === "reject" || value.type === "done") && !value.itemId) {
       ctx.addIssue({ code: "custom", message: "itemId is required", path: ["itemId"] });
     }
+    if (value.type === "done" && value.botId === "all") {
+      ctx.addIssue({ code: "custom", message: "botId is required", path: ["botId"] });
+    }
   });
+
+export const undoDoneSchema = z.object({
+  botId: botIdSchema,
+  itemId: botIdSchema,
+});
 
 export const ackSchema = z.object({
   id: z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,80}$/, "Invalid id"),
@@ -118,7 +130,7 @@ export const storedEventSchema = z.object({
 export const storedActionSchema = z.object({
   id: z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,80}$/),
   botId: z.string().regex(/^(all|[a-zA-Z0-9][a-zA-Z0-9_-]{0,63})$/),
-  type: z.enum(["approve", "reject", "message", "refresh"]),
+  type: z.enum(["approve", "reject", "message", "refresh", "done"]),
   itemId: botIdSchema.optional(),
   text: z.string().max(2000).optional(),
   status: z.enum(["pending", "delivered", "handled"]),
@@ -127,6 +139,18 @@ export const storedActionSchema = z.object({
   handledAt: timestamp.optional(),
   resultNote: z.string().max(2000).optional(),
   deliveryError: z.string().max(200).optional(),
+});
+
+export const storedDoneSchema = z.object({
+  id: botIdSchema,
+  botId: botIdSchema,
+  title: z.string().min(1).max(200),
+  detail: z.string().max(2000).optional(),
+  link: httpUrl.optional(),
+  kind: z.enum(["approval", "question", "fyi"]),
+  status: z.literal("done"),
+  done_at: timestamp,
+  done_by: z.literal("orel"),
 });
 
 export type StatusInput = z.infer<typeof statusSchema>;
@@ -146,7 +170,13 @@ export const toBotRecord = (input: StatusInput, now = new Date().toISOString()) 
   summary: input.summary,
   lastDone: input.lastDone,
   nextUp: input.nextUp,
-  needsOrel: input.needsOrel ?? [],
+  needsOrel: (input.needsOrel ?? []).map((item) => ({
+    id: item.id,
+    title: item.title,
+    detail: item.detail,
+    link: item.link,
+    kind: item.kind,
+  })),
   links: input.links ?? [],
   updatedAt: input.updatedAt ?? now,
 });
