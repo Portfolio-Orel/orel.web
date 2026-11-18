@@ -1,5 +1,11 @@
 import { BlobPreconditionFailedError, get, list, put } from "@vercel/blob";
-import { assertSafePath, PreconditionError, type JsonDriver, type StoredDocument } from "@/lib/storage/store";
+import {
+  assertSafePath,
+  PreconditionError,
+  UnreadableDocumentError,
+  type JsonDriver,
+  type StoredDocument,
+} from "@/lib/storage/store";
 
 const isPrecondition = (error: unknown): boolean =>
   error instanceof BlobPreconditionFailedError ||
@@ -14,7 +20,7 @@ export class BlobDriver implements JsonDriver {
     try {
       return { value: JSON.parse(text) as unknown, tag: result.blob.etag };
     } catch {
-      throw new Error("Stored document is unreadable");
+      throw new UnreadableDocumentError();
     }
   }
 

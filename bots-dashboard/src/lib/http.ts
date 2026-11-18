@@ -65,5 +65,6 @@ export const failureMessage = (error: unknown, fallback: string): string => {
 
 export const logFailure = (scope: string, error: unknown): void => {
   const name = error instanceof Error ? error.name : "error";
-  console.error(`${scope} failed`, name);
+  const message = error instanceof Error ? error.message.slice(0, 300) : "";
+  console.error(`${scope} failed`, name, message);
 };
